@@ -9,19 +9,18 @@ class Home extends StatefulWidget {
   }
 }
 
-/*  
-  State for starting page
- */
+/// State for starting page
 class HomeState extends State<Home> {
   int currentIndex = 0;
-  /// Holds
+
+  /// Hold widgets for starting page
   final List<Widget> children = [
     PlaceholderWidget(Colors.white),
     PlaceholderWidget(Colors.blueAccent),
     PlaylistWidget(),
   ];
 
-
+  /// Show currrent tab
   @override
   Widget build(BuildContext context) {
     return Scaffold(
