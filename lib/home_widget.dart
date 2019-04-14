@@ -1,3 +1,4 @@
+import 'package:fitness_tracker/playlist_widget_test.dart';
 import 'package:flutter/material.dart';
 import 'placeholder_widget.dart';
 import 'playlist_widget.dart';
@@ -16,7 +17,8 @@ class HomeState extends State<Home> {
   /// Hold widgets for starting page
   final List<Widget> children = [
     PlaceholderWidget(Colors.white),
-    PlaceholderWidget(Colors.blueAccent),
+    //PlaceholderWidget(Colors.blueAccent),
+    PlaylistTest(),
     PlaylistWidget(),
   ];
 
@@ -30,7 +32,7 @@ class HomeState extends State<Home> {
       body: children[currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         onTap: onTabTapped,
-        currentIndex: currentIndex, 
+        currentIndex: currentIndex,
         items: [
           BottomNavigationBarItem(
             icon: new Icon(Icons.home),
@@ -41,9 +43,7 @@ class HomeState extends State<Home> {
             title: new Text('Log'),
           ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.playlist_add),
-              title: Text('Playlist')
-          )
+              icon: Icon(Icons.playlist_add), title: Text('Playlist'))
         ],
       ),
     );
