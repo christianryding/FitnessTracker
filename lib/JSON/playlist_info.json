@@ -1,19 +1,17 @@
-{
-  "playlist":[
-    {
-    "id": 1,
-    "playlistName": "set1",
-    "imageURL": "image1"
-    },
-    {
-    "id": 2,
-    "playlistName": "set2",
-    "imageURL": "image2"
-    },
-    {
-    "id": 3,
-    "playlistName": "set3",
-    "imageURL": "image3"
-    }
-  ]
-}
+[
+  {
+  "id": 1,
+  "playlistName": "set1",
+  "imageURL": "image1"
+  },
+  {
+  "id": 2,
+  "playlistName": "set2",
+  "imageURL": "image2"
+  },
+  {
+  "id": 3,
+  "playlistName": "set3",
+  "imageURL": "image3"
+  }
+]
