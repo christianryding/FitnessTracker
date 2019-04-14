@@ -9,20 +9,11 @@ class PlaylistWidget extends StatelessWidget {
 }
 
 Widget playlistListView(BuildContext context) {
-  return ListView(
-    children: ListTile.divideTiles(
-      context: context,
-      tiles: [
-        ListTile(
-          title: Text('Sun'),
-        ),
-        ListTile(
-          title: Text('Moon'),
-        ),
-        ListTile(
-          title: Text('Star'),
-        ),
-      ],
-    ).toList(),
+
+  return new Container(
+
+
+
+
   );
-}
+} 
