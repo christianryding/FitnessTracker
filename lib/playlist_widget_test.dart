@@ -1,36 +1,79 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
-//import 'package:flutter_news_web/model/news.dart';
-//import 'package:flutter_news_web/news_details.dart';
 import 'package:http/http.dart' as http;
 
-
+/// Class to help retrieve playlist information
 class PlaylistJSON {
-  int id;
-  String name;
-  String imageURL;
-
-  PlaylistJSON({
-    this.id,
-    this.name,
-    this.imageURL
-  });
-
-  factory PlaylistJSON.fromJson(Map<String, dynamic> json) {
-    return PlaylistJSON(
-      id: json["id"],
-      name: json["playlistName"],
-      imageURL: json["description"],
-    );
+  final int id;
+  final String playlistName;
+  final String imageURL;
+  PlaylistJSON(this.id, this.playlistName, this.imageURL);
+  String name(){
+    return playlistName;
   }
 }
 
+class PlaylistTest extends StatefulWidget{  
+  @override
+  _MyHomePageState createState() => new _MyHomePageState();
+}
 
-class PlaylistTest extends StatefulWidget{
-  List<PlaylistJSON> list;
 
+class _MyHomePageState extends State<PlaylistTest>{
+ 
+  Future<List<PlaylistJSON>> _getPlaylist() async {
+
+    var data = await http.get("https://raw.githubusercontent.com/christianryding/FitnessTracker/master/lib/JSON/playlist_info.json");
+    var jsonData = jsonDecode(data.body);
+    List<PlaylistJSON> playlistArray = [];
+
+    for(var u in jsonData){
+      PlaylistJSON playlist = PlaylistJSON(u["id"], u["playlistName"], u["imageURL"]);
+      playlistArray.add(playlist);
+    }
+    print(playlistArray.length);
+    return playlistArray;
+  } 
+
+
+
+  @override
+  Widget build(BuildContext context) {
+  
+    return new Scaffold(
+      body: Container(
+        child: FutureBuilder(
+          future: _getPlaylist(),
+          builder: (BuildContext context, AsyncSnapshot snapshot){
+            if(snapshot.data == null){
+              return Container(
+                child: Center(
+                  child: Text("Loading"),
+                ),
+              );
+            } else{
+                return ListView.builder(
+                  itemCount: snapshot.data.length,
+                  itemBuilder: (BuildContext context, int index){
+                    return ListTile(
+                      title: Text(snapshot.data[index].playlistName),
+                    );
+                  },
+                );
+              }
+          },
+        ),
+      ),
+    );
+  }
+
+
+}
+
+  
+  
+/*   List<PlaylistJSON> list;
   Future<List<PlaylistJSON>> getData(String newsType) async {
     String link =
         "https://newsapi.org/v2/top-headlines?country=in&apiKey=API_KEY";
@@ -57,4 +100,4 @@ class PlaylistTest extends StatefulWidget{
     return null;
   }
 
-}
+} */

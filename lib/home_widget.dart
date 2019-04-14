@@ -1,6 +1,5 @@
-import 'package:fitness_tracker/playlist_widget_test.dart';
+import 'playlist_widget_test.dart';
 import 'package:flutter/material.dart';
-import 'placeholder_widget.dart';
 import 'playlist_widget.dart';
 
 class Home extends StatefulWidget {
@@ -16,10 +15,9 @@ class HomeState extends State<Home> {
 
   /// Hold widgets for starting page
   final List<Widget> children = [
-    PlaceholderWidget(Colors.white),
-    //PlaceholderWidget(Colors.blueAccent),
-    PlaylistTest(),
     PlaylistWidget(),
+    PlaylistWidget(),
+    PlaylistTest(),
   ];
 
   /// Show currrent tab
