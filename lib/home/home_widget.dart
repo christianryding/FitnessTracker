@@ -36,7 +36,7 @@ class HomeState extends State<Home> {
         items: [
           BottomNavigationBarItem(
             icon: new Icon(Icons.home),
-            title: new Text('Home'),
+            title: new Text('Hom'),
           ),
           BottomNavigationBarItem(
             icon: new Icon(Icons.add),
