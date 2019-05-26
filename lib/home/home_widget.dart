@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-
 import '../playlist/playlist_widget.dart';
-//import '../playlist_widget.dart';
+import 'home_page.dart';
+import '../log/log_page.dart';
+import '../playlist/playlist_page.dart';
 
 
 class Home extends StatefulWidget {
@@ -17,12 +18,12 @@ class HomeState extends State<Home> {
 
   /// Hold widgets for starting page
   final List<Widget> children = [
-    PlaylistWidget(),
-    PlaylistWidget(),
-    PlaylistTest(),
+    HomePage(),
+    LogPage(),
+    PlaylistPage(),
   ];
 
-  /// Show currrent tab
+  /// Show current tab
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +37,7 @@ class HomeState extends State<Home> {
         items: [
           BottomNavigationBarItem(
             icon: new Icon(Icons.home),
-            title: new Text('Hom'),
+            title: new Text('Home'),
           ),
           BottomNavigationBarItem(
             icon: new Icon(Icons.add),

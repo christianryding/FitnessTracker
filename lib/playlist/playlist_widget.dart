@@ -40,23 +40,22 @@ class _MyHomePageState extends State<PlaylistTest>{
 
   @override
   Widget build(BuildContext context) {
-    
-    return new Scaffold(
-      body: Container(
-        child: FutureBuilder(
-          future: _getPlaylist(),
-          builder: (BuildContext context, AsyncSnapshot snapshot){
-            if(snapshot.data == null){
-              return Container(
-                child: Center(
-                  child: Text("Loading"),
-                ),
-              );
-            } else{
-                return ListView.builder(
-                  itemCount: snapshot.data.length,
-                  itemBuilder: (BuildContext context, int index){
-                    return ListTile(
+    return new Center(
+      child: FutureBuilder(
+        future: _getPlaylist(),
+        builder: (BuildContext context, AsyncSnapshot snapshot){
+          if(snapshot.data == null){
+            return Container(
+              child: Center(
+                child: Text("Loading"),
+              ),
+            );
+          }
+          else{
+              return ListView.builder(
+                itemCount: snapshot.data.length,
+                itemBuilder: (BuildContext context, int index){
+                  return ListTile(
                       leading: const Icon(Icons.transform),  
                       title: Text(snapshot.data[index].playlistName),
                       onTap: () { 
@@ -68,7 +67,6 @@ class _MyHomePageState extends State<PlaylistTest>{
               }
           },
         ),
-      ),
     );
   }
 }
@@ -77,22 +75,3 @@ class _MyHomePageState extends State<PlaylistTest>{
 
 
 
-/*---------------------------------------------------*/
-
-/// Returns list of available training sets
-class PlaylistWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return playlistListView(context);
-  }
-}
-
-Widget playlistListView(BuildContext context) {
-
-  return new Container(
-
-
-
-
-  );
-} 
