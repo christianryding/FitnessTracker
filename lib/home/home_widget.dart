@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../playlist/playlist_widget.dart';
 import 'home_page.dart';
 import '../log/log_page.dart';
 import '../playlist/playlist_page.dart';

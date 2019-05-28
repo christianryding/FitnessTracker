@@ -2,7 +2,37 @@ import 'dart:io';
 import 'dart:async';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
-import 'db_playlist.dart';
+
+class Playlist{
+  int _id;
+  String _title;
+
+  // Constructors
+  Playlist(this._title);
+  Playlist.withID(this._id);
+
+  int get id => _id;
+  String get title => _title;
+  set title(String newTitle){
+    this._title=newTitle;
+  }
+
+  // Convert a Playlist object to a Map object
+  Map<String, dynamic> toMap(){
+    var map = Map<String, dynamic>();
+    if(id != null){
+      map['id'] = _id;
+    }
+    map['title'] = _title;
+    return map;
+  }
+
+  // Extract a playlist object from a map object
+  Playlist.fromMapObject(Map<String, dynamic> map){
+    this._id = map['id'];
+    this._title = map['title'];
+  }
+}
 
 class DatabaseHelper{
 
