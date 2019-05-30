@@ -5,12 +5,10 @@ import '../utils/database_helper.dart';
 import '../screens/note_detail.dart';
 import 'package:sqflite/sqflite.dart';
 
-
 class NoteList extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-
     return NoteListState();
   }
 }
@@ -31,13 +29,13 @@ class NoteListState extends State<NoteList> {
 
     return Scaffold(
 
-      appBar: AppBar(
-        title: Text('Notes'),
-      ),
+      //appBar: AppBar(
+        //title: Text('Notes'),
+      //),
 
       body: getNoteListView(),
 
-      floatingActionButton: FloatingActionButton(
+      /*floatingActionButton: FloatingActionButton(
         onPressed: () {
           debugPrint('FAB clicked');
           navigateToDetail(Note('', '', 2), 'Add Note');
@@ -47,7 +45,7 @@ class NoteListState extends State<NoteList> {
 
         child: Icon(Icons.add),
 
-      ),
+      ),*/
     );
   }
 
@@ -62,27 +60,24 @@ class NoteListState extends State<NoteList> {
           color: Colors.white,
           elevation: 2.0,
           child: ListTile(
-
             leading: CircleAvatar(
               backgroundColor: getPriorityColor(this.noteList[position].priority),
               child: getPriorityIcon(this.noteList[position].priority),
             ),
-
             title: Text(this.noteList[position].title, style: titleStyle,),
-
             subtitle: Text(this.noteList[position].date),
 
-            trailing: GestureDetector(
+            /*trailing: GestureDetector(
               child: Icon(Icons.delete, color: Colors.grey,),
               onTap: () {
                 _delete(context, noteList[position]);
               },
-            ),
+            ),*/
 
 
             onTap: () {
               debugPrint("ListTile Tapped");
-              navigateToDetail(this.noteList[position],'Edit Note');
+              navigateToDetail(this.noteList[position],this.noteList[position].title);
             },
 
           ),
@@ -95,7 +90,7 @@ class NoteListState extends State<NoteList> {
   Color getPriorityColor(int priority) {
     switch (priority) {
       case 1:
-        return Colors.red;
+        return Colors.blue;
         break;
       case 2:
         return Colors.yellow;

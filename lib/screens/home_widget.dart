@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'home_page.dart';
-import '../log/log_page.dart';
-import '../playlist/playlist_page.dart';
+import 'package:fitness_tracker/screens/home_page.dart';
+import 'package:fitness_tracker/screens/log_page.dart';
 import '../screens/note_list.dart';
 
 
@@ -20,7 +19,6 @@ class HomeState extends State<Home> {
   final List<Widget> children = [
     HomePage(),
     LogPage(),
-    //PlaylistPage(),
     NoteList(),
   ];
 

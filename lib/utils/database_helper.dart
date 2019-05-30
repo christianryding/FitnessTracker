@@ -10,6 +10,7 @@ class DatabaseHelper {
   static Database _database;                // Singleton Database
 
   String noteTable = 'note_table';
+  String foreignTable = 'foreign_table';
   String colId = 'id';
   String colTitle = 'title';
   String colDescription = 'description';
@@ -37,7 +38,7 @@ class DatabaseHelper {
   Future<Database> initializeDatabase() async {
     // Get the directory path for both Android and iOS to store database.
     Directory directory = await getApplicationDocumentsDirectory();
-    String path = directory.path + 'notes.db';
+    String path = directory.path + 'notes7.db';
 
     // Open/create the database at a given path
     var notesDatabase = await openDatabase(path, version: 1, onCreate: _createDb);
@@ -51,7 +52,19 @@ class DatabaseHelper {
         '$colTitle TEXT, '
         '$colDescription TEXT, '
         '$colPriority INTEGER, '
-        '$colDate TEXT)');
+        '$colDate TEXT )'
+        //'FOREIGN KEY ($colId) REFERENCES $foreignTable (colId) '
+    );
+
+    await db.execute('''
+          INSERT INTO $noteTable
+            ($colId, $colTitle,$colDescription, $colPriority, $colDate)
+          VALUES
+            (1,"Summer PreWorkout", "w1", 1, "May 30, 2019"),
+            (2,"Winter PreWorkout", "w1", 1, "May 30, 2019"),
+            (3,"After Summer Workout", "w1", 1, "May 30, 2019")'''
+    );
+
   }
 
   // Fetch Operation: Get all note objects from database
@@ -95,7 +108,7 @@ class DatabaseHelper {
   // Get the 'Map List' [ List<Map> ] and convert it to 'Note List' [ List<Note> ]
   Future<List<Note>> getNoteList() async {
 
-      var noteMapList = await getNoteMapList(); // Get 'Map List' from database
+    var noteMapList = await getNoteMapList(); // Get 'Map List' from database
     int count = noteMapList.length;         // Count the number of map entries in db table
 
     List<Note> noteList = List<Note>();

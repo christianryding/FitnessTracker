@@ -65,7 +65,7 @@ class NoteDetailState extends State<NoteDetail> {
               children: <Widget>[
 
                 // First element
-                ListTile(
+                /*ListTile(
                   title: DropdownButton(
                       items: _priorities.map((String dropDownStringItem) {
                         return DropdownMenuItem<String> (
@@ -81,11 +81,11 @@ class NoteDetailState extends State<NoteDetail> {
                       onChanged: (valueSelectedByUser) {
                         setState(() {
                           debugPrint('User selected $valueSelectedByUser');
-                          updatePriorityAsInt(valueSelectedByUser);
+                          //updatePriorityAsInt(valueSelectedByUser);
                         });
                       }
                   ),
-                ),
+                ),*/
 
                 // Second Element
                 Padding(
@@ -108,7 +108,7 @@ class NoteDetailState extends State<NoteDetail> {
                 ),
 
                 // Third Element
-                Padding(
+                /*Padding(
                   padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
                   child: TextField(
                     controller: descriptionController,
@@ -125,10 +125,10 @@ class NoteDetailState extends State<NoteDetail> {
                         )
                     ),
                   ),
-                ),
+                ),*/
 
                 // Fourth Element
-                Padding(
+                /*Padding(
                   padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
                   child: Row(
                     children: <Widget>[
@@ -170,7 +170,7 @@ class NoteDetailState extends State<NoteDetail> {
 
                     ],
                   ),
-                ),
+                ),*/
 
               ],
             ),
@@ -184,7 +184,7 @@ class NoteDetailState extends State<NoteDetail> {
   }
 
   // Convert the String priority in the form of integer before saving it to Database
-  void updatePriorityAsInt(String value) {
+  /*void updatePriorityAsInt(String value) {
     switch (value) {
       case 'High':
         note.priority = 1;
@@ -193,10 +193,10 @@ class NoteDetailState extends State<NoteDetail> {
         note.priority = 2;
         break;
     }
-  }
+  }*/
 
   // Convert int priority to String priority and display it to user in DropDown
-  String getPriorityAsString(int value) {
+  /*String getPriorityAsString(int value) {
     String priority;
     switch (value) {
       case 1:
@@ -207,7 +207,7 @@ class NoteDetailState extends State<NoteDetail> {
         break;
     }
     return priority;
-  }
+  }*/
 
   // Update the title of Note object
   void updateTitle(){

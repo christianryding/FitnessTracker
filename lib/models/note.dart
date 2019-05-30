@@ -32,11 +32,11 @@ class Note {
     }
   }
 
-  set priority(int newPriority) {
+  /*set priority(int newPriority) {
     if (newPriority >= 1 && newPriority <= 2) {
       this._priority = newPriority;
     }
-  }
+  }*/
 
   set date(String newDate) {
     this._date = newDate;

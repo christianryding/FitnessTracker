@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './home/home_widget.dart';
+import 'package:fitness_tracker/screens/home_widget.dart';
 
 void main() => runApp(FitnessTracker());
 
