@@ -1,104 +1,97 @@
-import 'dart:async';
 import 'dart:io';
+
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
-import 'story.dart';
-import 'user.dart';
 
-class DatabaseClient {
-  Database _db;
+class DatabaseHelper {
 
-  /*Future create() async {
-    Directory path = await getApplicationDocumentsDirectory();
-    String dbPath = join(path.path, "database.db");
+  static final _databaseName = "workout_playlist3.db";
+  static final _databaseVersion = 1;
 
-    _db = await openDatabase(dbPath, version: 1);
-  }*/
-  Future create() async {
-    Directory path = await getApplicationDocumentsDirectory();
-    String dbPath = join(path.path, "tradecraft.db");
+  static final table = 'playlist_table';
 
-    _db = await openDatabase(dbPath, version: 1,
-        onCreate: this._create);
+  static final columnId = '_id';
+  static final columnName = 'name';
+  static final columnDesc = 'desc';
+
+  // make this a singleton class
+  DatabaseHelper._privateConstructor();
+  static final DatabaseHelper instance = DatabaseHelper._privateConstructor();
+
+  // only have a single app-wide reference to the database
+  static Database _database;
+  Future<Database> get database async {
+    if (_database != null) return _database;
+    // lazily instantiate the db the first time it is accessed
+    _database = await _initDatabase();
+    return _database;
   }
 
-  Future _create(Database db, int version) async {
-    await db.execute("""
-            CREATE TABLE story (
-              id INTEGER PRIMARY KEY, 
-              user_id INTEGER NOT NULL,
-              title TEXT NOT NULL,
-              body TEXT NOT NULL,
-              FOREIGN KEY (user_id) REFERENCES user (id) 
-                ON DELETE NO ACTION ON UPDATE NO ACTION
-            )""");
-
-    await db.execute("""
-            CREATE TABLE user (
-              id INTEGER PRIMARY KEY,
-              username TEXT NOT NULL UNIQUE
-            )""");
+  // this opens the database (and creates it if it doesn't exist)
+  _initDatabase() async {
+    Directory documentsDirectory = await getApplicationDocumentsDirectory();
+    String path = join(documentsDirectory.path, _databaseName);
+    return await openDatabase(path,
+        version: _databaseVersion,
+        onCreate: _onCreate);
   }
 
-
-  Future<User> upsertUser(User user) async {
-    var count = Sqflite.firstIntValue(await _db.rawQuery("SELECT COUNT(*) FROM user WHERE username = ?", [user.username]));
-    if (count == 0) {
-      user.id = await _db.insert("user", user.toMap());
-    } else {
-      await _db.update("user", user.toMap(), where: "id = ?", whereArgs: [user.id]);
-    }
-
-    return user;
+  // SQL code to create the database table
+  Future _onCreate(Database db, int version) async {
+    await db.execute('''
+          CREATE TABLE $table (
+            $columnId INTEGER PRIMARY KEY,
+            $columnName TEXT NOT NULL,
+            $columnDesc TEXT NOT NULL
+          )
+          ''');
+    await db.execute('''
+          INSERT INTO $table
+            ($columnId, $columnName,$columnDesc)
+          VALUES
+            (1,"Summer PreWorkout", "as"),
+            (2,"After Summer", "asd"),
+            (3,"Get Fit or Die Trying", "asdas")'''
+          );
   }
 
-  Future<Story> upsertStory(Story story) async {
-    if (story.id == null) {
-      story.id = await _db.insert("story", story.toMap());
-    } else {
-      await _db.update("story", story.toMap(), where: "id = ?", whereArgs: [story.id]);
-    }
+  // Helper methods
 
-    return story;
+  // Inserts a row in the database where each key in the Map is a column name
+  // and the value is the column value. The return value is the id of the
+  // inserted row.
+  Future<int> insert(Map<String, dynamic> row) async {
+    Database db = await instance.database;
+    return await db.insert(table, row);
   }
 
-  Future<User> fetchUser(int id) async {
-    List<Map> results = await _db.query("user", columns: User.columns, where: "id = ?", whereArgs: [id]);
-
-    User user = User.fromMap(results[0]);
-
-    return user;
+  // All of the rows are returned as a list of maps, where each map is
+  // a key-value list of columns.
+  Future<List<Map<String, dynamic>>> queryAllRows() async {
+    Database db = await instance.database;
+    return await db.query(table);
   }
 
-  Future<Story> fetchStory(int id) async {
-    List<Map> results = await _db.query("story", columns: Story.columns, where: "id = ?", whereArgs: [id]);
-
-    Story story = Story.fromMap(results[0]);
-
-    return story;
+  // All of the methods (insert, query, update, delete) can also be done using
+  // raw SQL commands. This method uses a raw query to give the row count.
+  Future<int> queryRowCount() async {
+    Database db = await instance.database;
+    return Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM $table'));
   }
 
-  Future<List<Story>> fetchLatestStories(int limit) async {
-    List<Map> results = await _db.query("story", columns: Story.columns, limit: limit, orderBy: "id DESC");
-
-    List<Story> stories = new List();
-    results.forEach((result) {
-      Story story = Story.fromMap(result);
-      stories.add(story);
-    });
-
-    return stories;
+  // We are assuming here that the id column in the map is set. The other
+  // column values will be used to update the row.
+  Future<int> update(Map<String, dynamic> row) async {
+    Database db = await instance.database;
+    int id = row[columnId];
+    return await db.update(table, row, where: '$columnId = ?', whereArgs: [id]);
   }
 
-  Future<Story> fetchStoryAndUser(int storyId) async {
-    List<Map> results = await _db.query("story", columns: Story.columns, where: "id = ?", whereArgs: [storyId]);
-
-    Story story = Story.fromMap(results[0]);
-    story.user = await fetchUser(story.user_id);
-
-    return story;
+  // Deletes the row specified by the id. The number of affected rows is
+  // returned. This should be 1 as long as the row exists.
+  Future<int> delete(int id) async {
+    Database db = await instance.database;
+    return await db.delete(table, where: '$columnId = ?', whereArgs: [id]);
   }
-
 }
-
