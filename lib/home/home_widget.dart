@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'home_page.dart';
 import '../log/log_page.dart';
 import '../playlist/playlist_page.dart';
+import '../screens/note_list.dart';
 
 
 class Home extends StatefulWidget {
@@ -19,7 +20,8 @@ class HomeState extends State<Home> {
   final List<Widget> children = [
     HomePage(),
     LogPage(),
-    PlaylistPage(),
+    //PlaylistPage(),
+    NoteList(),
   ];
 
   /// Show current tab
