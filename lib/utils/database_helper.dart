@@ -14,8 +14,6 @@ class DatabaseHelper {
   String colId = 'id';
   String colTitle = 'title';
   String colDescription = 'description';
-  String colPriority = 'priority';
-  String colDate = 'date';
 
   DatabaseHelper._createInstance(); // Named constructor to create instance of DatabaseHelper
 
@@ -38,7 +36,7 @@ class DatabaseHelper {
   Future<Database> initializeDatabase() async {
     // Get the directory path for both Android and iOS to store database.
     Directory directory = await getApplicationDocumentsDirectory();
-    String path = directory.path + 'notes7.db';
+    String path = directory.path + 'notes12.db';
 
     // Open/create the database at a given path
     var notesDatabase = await openDatabase(path, version: 1, onCreate: _createDb);
@@ -51,20 +49,32 @@ class DatabaseHelper {
         '$colId INTEGER PRIMARY KEY AUTOINCREMENT, '
         '$colTitle TEXT, '
         '$colDescription TEXT, '
-        '$colPriority INTEGER, '
-        '$colDate TEXT )'
-        //'FOREIGN KEY ($colId) REFERENCES $foreignTable (colId) '
+        'FOREIGN KEY ($colId) REFERENCES $foreignTable (colId) ) '
     );
 
     await db.execute('''
           INSERT INTO $noteTable
-            ($colId, $colTitle,$colDescription, $colPriority, $colDate)
+            ($colId, $colTitle,$colDescription)
           VALUES
             (1,"Summer PreWorkout", "w1", 1, "May 30, 2019"),
             (2,"Winter PreWorkout", "w1", 1, "May 30, 2019"),
             (3,"After Summer Workout", "w1", 1, "May 30, 2019")'''
     );
 
+    /* TEST METHODS */
+    await db.execute('CREATE TABLE $foreignTable('
+        '$colId INTEGER PRIMARY KEY, '
+        '$colTitle TEXT, '
+        '$colDescription TEXT ) '
+    );
+    await db.execute('''
+          INSERT INTO $foreignTable
+            ($colId, $colTitle, $colDescription)
+          VALUES
+            (1,"123", "nnn"),
+            (2,"456", "nnnn"),
+            (3,"789", "nnn")'''
+    );
   }
 
   // Fetch Operation: Get all note objects from database
@@ -72,7 +82,7 @@ class DatabaseHelper {
     Database db = await this.database;
 
     //var result = await db.rawQuery('SELECT * FROM $noteTable order by $colPriority ASC');
-    var result = await db.query(noteTable, orderBy: '$colPriority ASC');
+    var result = await db.query(noteTable);
     return result;
   }
 
@@ -114,6 +124,7 @@ class DatabaseHelper {
     List<Note> noteList = List<Note>();
     // For loop to create a 'Note List' from a 'Map List'
     for (int i = 0; i < count; i++) {
+
       noteList.add(Note.fromMapObject(noteMapList[i]));
     }
 

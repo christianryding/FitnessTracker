@@ -61,25 +61,16 @@ class NoteListState extends State<NoteList> {
           elevation: 2.0,
           child: ListTile(
             leading: CircleAvatar(
-              backgroundColor: getPriorityColor(this.noteList[position].priority),
-              child: getPriorityIcon(this.noteList[position].priority),
+              backgroundColor: Colors.blue,
+              child: Icon(Icons.play_arrow),
             ),
             title: Text(this.noteList[position].title, style: titleStyle,),
-            subtitle: Text(this.noteList[position].date),
-
-            /*trailing: GestureDetector(
-              child: Icon(Icons.delete, color: Colors.grey,),
-              onTap: () {
-                _delete(context, noteList[position]);
-              },
-            ),*/
-
+            //subtitle: Text(this.noteList[position].date),
 
             onTap: () {
               debugPrint("ListTile Tapped");
               navigateToDetail(this.noteList[position],this.noteList[position].title);
             },
-
           ),
         );
       },
@@ -98,21 +89,6 @@ class NoteListState extends State<NoteList> {
 
       default:
         return Colors.yellow;
-    }
-  }
-
-  // Returns the priority icon
-  Icon getPriorityIcon(int priority) {
-    switch (priority) {
-      case 1:
-        return Icon(Icons.play_arrow);
-        break;
-      case 2:
-        return Icon(Icons.keyboard_arrow_right);
-        break;
-
-      default:
-        return Icon(Icons.keyboard_arrow_right);
     }
   }
 

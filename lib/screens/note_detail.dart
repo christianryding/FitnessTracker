@@ -20,8 +20,6 @@ class NoteDetail extends StatefulWidget {
 
 class NoteDetailState extends State<NoteDetail> {
 
-  static var _priorities = ['High', 'Low'];
-
   DatabaseHelper helper = DatabaseHelper();
 
   String appBarTitle;
@@ -64,30 +62,7 @@ class NoteDetailState extends State<NoteDetail> {
             child: ListView(
               children: <Widget>[
 
-                // First element
-                /*ListTile(
-                  title: DropdownButton(
-                      items: _priorities.map((String dropDownStringItem) {
-                        return DropdownMenuItem<String> (
-                          value: dropDownStringItem,
-                          child: Text(dropDownStringItem),
-                        );
-                      }).toList(),
-
-                      style: textStyle,
-
-                      value: getPriorityAsString(note.priority),
-
-                      onChanged: (valueSelectedByUser) {
-                        setState(() {
-                          debugPrint('User selected $valueSelectedByUser');
-                          //updatePriorityAsInt(valueSelectedByUser);
-                        });
-                      }
-                  ),
-                ),*/
-
-                // Second Element
+                // First Element
                 Padding(
                   padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
                   child: TextField(
@@ -106,28 +81,7 @@ class NoteDetailState extends State<NoteDetail> {
                     ),
                   ),
                 ),
-
-                // Third Element
-                /*Padding(
-                  padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
-                  child: TextField(
-                    controller: descriptionController,
-                    style: textStyle,
-                    onChanged: (value) {
-                      debugPrint('Something changed in Description Text Field');
-                      updateDescription();
-                    },
-                    decoration: InputDecoration(
-                        labelText: 'Description',
-                        labelStyle: textStyle,
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0)
-                        )
-                    ),
-                  ),
-                ),*/
-
-                // Fourth Element
+                // Second Element
                 /*Padding(
                   padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
                   child: Row(
@@ -183,32 +137,6 @@ class NoteDetailState extends State<NoteDetail> {
     Navigator.pop(context, true);
   }
 
-  // Convert the String priority in the form of integer before saving it to Database
-  /*void updatePriorityAsInt(String value) {
-    switch (value) {
-      case 'High':
-        note.priority = 1;
-        break;
-      case 'Low':
-        note.priority = 2;
-        break;
-    }
-  }*/
-
-  // Convert int priority to String priority and display it to user in DropDown
-  /*String getPriorityAsString(int value) {
-    String priority;
-    switch (value) {
-      case 1:
-        priority = _priorities[0];  // 'High'
-        break;
-      case 2:
-        priority = _priorities[1];  // 'Low'
-        break;
-    }
-    return priority;
-  }*/
-
   // Update the title of Note object
   void updateTitle(){
     note.title = titleController.text;
@@ -224,7 +152,6 @@ class NoteDetailState extends State<NoteDetail> {
 
     moveToLastScreen();
 
-    note.date = DateFormat.yMMMd().format(DateTime.now());
     int result;
     if (note.id != null) {  // Case 1: Update operation
       result = await helper.updateNote(note);

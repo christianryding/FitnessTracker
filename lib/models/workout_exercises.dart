@@ -1,15 +1,12 @@
-import 'workout_exercises.dart';
-
-class Note {
+class WorkoutExercises {
 
   int _id;
   String _title;
   String _description;
-  WorkoutExercises workoutExercises;
 
-  Note(this._title, [this._description]);
+  WorkoutExercises(this._title, [this._description]);
 
-  Note.withId(this._id, this._title, [this._description]);
+  WorkoutExercises.withId(this._id, this._title, [this._description]);
 
   int get id => _id;
 
@@ -29,13 +26,6 @@ class Note {
     }
   }
 
-  /* TEST */
-  set exercises(WorkoutExercises we){
-    this.workoutExercises = we;
-  }
-  WorkoutExercises get exercises => workoutExercises;
-  /*     */
-
   // Convert a Note object into a Map object
   Map<String, dynamic> toMap() {
 
@@ -50,7 +40,7 @@ class Note {
   }
 
   // Extract a Note object from a Map object
-  Note.fromMapObject(Map<String, dynamic> map) {
+  WorkoutExercises.fromMapObject(Map<String, dynamic> map) {
     this._id = map['id'];
     this._title = map['title'];
     this._description = map['description'];
