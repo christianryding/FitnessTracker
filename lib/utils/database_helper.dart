@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import '../models/note.dart';
+import '../models/user.dart';
 
 class DatabaseHelper {
 
@@ -36,7 +37,7 @@ class DatabaseHelper {
   Future<Database> initializeDatabase() async {
     // Get the directory path for both Android and iOS to store database.
     Directory directory = await getApplicationDocumentsDirectory();
-    String path = directory.path + 'notes12.db';
+    String path = directory.path + 'notes14.db';
 
     // Open/create the database at a given path
     var notesDatabase = await openDatabase(path, version: 1, onCreate: _createDb);
@@ -49,31 +50,32 @@ class DatabaseHelper {
         '$colId INTEGER PRIMARY KEY AUTOINCREMENT, '
         '$colTitle TEXT, '
         '$colDescription TEXT, '
-        'FOREIGN KEY ($colId) REFERENCES $foreignTable (colId) ) '
+        'FOREIGN KEY ($colId) REFERENCES user (id) ) '
     );
 
     await db.execute('''
           INSERT INTO $noteTable
             ($colId, $colTitle,$colDescription)
           VALUES
-            (1,"Summer PreWorkout", "w1", 1, "May 30, 2019"),
-            (2,"Winter PreWorkout", "w1", 1, "May 30, 2019"),
-            (3,"After Summer Workout", "w1", 1, "May 30, 2019")'''
+            (1,"Summer PreWorkout", "w1"),
+            (2,"Winter PreWorkout", "w1"),
+            (3,"After Summer Workout", "w1")'''
     );
 
     /* TEST METHODS */
-    await db.execute('CREATE TABLE $foreignTable('
-        '$colId INTEGER PRIMARY KEY, '
-        '$colTitle TEXT, '
-        '$colDescription TEXT ) '
-    );
+    await db.execute("""
+            CREATE TABLE user (
+              id INTEGER PRIMARY KEY,
+              username TEXT NOT NULL UNIQUE
+            )""");
+    // ADD ONE MORE COLUMN
     await db.execute('''
-          INSERT INTO $foreignTable
-            ($colId, $colTitle, $colDescription)
+          INSERT INTO user
+            (id, username)
           VALUES
-            (1,"123", "nnn"),
-            (2,"456", "nnnn"),
-            (3,"789", "nnn")'''
+            (1,"123"),
+            (2,"456"),
+            (3,"789")'''
     );
   }
 
@@ -124,11 +126,37 @@ class DatabaseHelper {
     List<Note> noteList = List<Note>();
     // For loop to create a 'Note List' from a 'Map List'
     for (int i = 0; i < count; i++) {
-
       noteList.add(Note.fromMapObject(noteMapList[i]));
     }
-
     return noteList;
   }
 
+
+
+  Future<User> upsertUser(User user) async {
+    var count = Sqflite.firstIntValue(await _database.rawQuery("SELECT COUNT(*) FROM user WHERE username = ?", [user.username]));
+    if (count == 0) {
+      user.id = await _database.insert("user", user.toMap());
+    } else {
+      await _database.update("user", user.toMap(), where: "id = ?", whereArgs: [user.id]);
+    }
+    return user;
+  }
+
+  Future<User> fetchUser(int id) async {
+    List<Map> results = await _database.query("user", columns: User.columns, where: "id = ?", whereArgs: [id]);
+
+    User user = User.fromMap(results[0]);
+
+    return user;
+  }
+
+  Future<Note> fetchNoteAndUser(int noteId) async {
+    List<Map> results = await _database.query("note_table", columns: Note.columns, where: "id = ?", whereArgs: [noteId]);
+
+    Note note = Note.fromMapObject(results[0]);
+    note.user = await fetchUser(note.id);
+
+    return note;
+  }
 }

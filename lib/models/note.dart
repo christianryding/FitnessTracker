@@ -1,11 +1,13 @@
-import 'workout_exercises.dart';
+import 'user.dart';
 
 class Note {
 
   int _id;
   String _title;
   String _description;
-  WorkoutExercises workoutExercises;
+  User user;
+
+  static final columns = ["id", "title", "description"];
 
   Note(this._title, [this._description]);
 
@@ -28,13 +30,6 @@ class Note {
       this._description = newDescription;
     }
   }
-
-  /* TEST */
-  set exercises(WorkoutExercises we){
-    this.workoutExercises = we;
-  }
-  WorkoutExercises get exercises => workoutExercises;
-  /*     */
 
   // Convert a Note object into a Map object
   Map<String, dynamic> toMap() {

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/note.dart';
 import '../utils/database_helper.dart';
 import 'package:intl/intl.dart';
+import '../models/user.dart';
 
 class NoteDetail extends StatefulWidget {
 
@@ -82,7 +83,7 @@ class NoteDetailState extends State<NoteDetail> {
                   ),
                 ),
                 // Second Element
-                /*Padding(
+                Padding(
                   padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
                   child: Row(
                     children: <Widget>[
@@ -97,7 +98,8 @@ class NoteDetailState extends State<NoteDetail> {
                           onPressed: () {
                             setState(() {
                               debugPrint("Save button clicked");
-                              _save();
+                              //_save();
+                              _print();
                             });
                           },
                         ),
@@ -124,7 +126,7 @@ class NoteDetailState extends State<NoteDetail> {
 
                     ],
                   ),
-                ),*/
+                ),
 
               ],
             ),
@@ -132,6 +134,21 @@ class NoteDetailState extends State<NoteDetail> {
 
         ));
   }
+
+  /* TESTING */
+  void _print()async{
+    /*User admin = new User();
+    admin.username = "admin";
+    admin = await helper.upsertUser(admin);
+    */
+
+    Note note = new Note("Breaking Story!","Some great content...");
+    var note2 = await helper.insertNote(note);
+    Note note3 = await helper.fetchNoteAndUser(1);
+    debugPrint("note 3 username = " + note3.user.username);
+  }
+  /* TESTING */
+
 
   void moveToLastScreen() {
     Navigator.pop(context, true);
