@@ -1,43 +1,43 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import '../models/note.dart';
+import '../models/workouts.dart';
 import '../utils/database_helper.dart';
 import 'package:intl/intl.dart';
-import '../models/user.dart';
+import '../models/workout_exercises.dart';
 
-class NoteDetail extends StatefulWidget {
+class WorkoutDetail extends StatefulWidget {
 
   final String appBarTitle;
-  final Note note;
+  final Workouts workout;
 
-  NoteDetail(this. note, this.appBarTitle);
+  WorkoutDetail(this. workout, this.appBarTitle);
 
   @override
   State<StatefulWidget> createState() {
 
-    return NoteDetailState(this.note, this.appBarTitle);
+    return WorkoutDetailState(this.workout, this.appBarTitle);
   }
 }
 
-class NoteDetailState extends State<NoteDetail> {
+class WorkoutDetailState extends State<WorkoutDetail> {
 
   DatabaseHelper helper = DatabaseHelper();
 
   String appBarTitle;
-  Note note;
+  Workouts workouts;
 
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
 
-  NoteDetailState(this.note, this.appBarTitle);
+  WorkoutDetailState(this.workouts, this.appBarTitle);
 
   @override
   Widget build(BuildContext context) {
 
     TextStyle textStyle = Theme.of(context).textTheme.title;
 
-    titleController.text = note.title;
-    descriptionController.text = note.description;
+    titleController.text = workouts.title;
+    descriptionController.text = workouts.description;
 
     return WillPopScope(
 
@@ -98,7 +98,7 @@ class NoteDetailState extends State<NoteDetail> {
                           onPressed: () {
                             setState(() {
                               debugPrint("Save button clicked");
-                              //_save();
+                              _save();
                               _print();
                             });
                           },
@@ -142,9 +142,9 @@ class NoteDetailState extends State<NoteDetail> {
     admin = await helper.upsertUser(admin);
     */
 
-    Note note = new Note("Breaking Story!","Some great content...");
+    Workouts note = new Workouts("Breaking Story!","Some great content...");
     var note2 = await helper.insertNote(note);
-    Note note3 = await helper.fetchNoteAndUser(1);
+    Workouts note3 = await helper.fetchNoteAndUser(1);
     debugPrint("note 3 username = " + note3.user.username);
   }
   /* TESTING */
@@ -156,12 +156,12 @@ class NoteDetailState extends State<NoteDetail> {
 
   // Update the title of Note object
   void updateTitle(){
-    note.title = titleController.text;
+    workouts.title = titleController.text;
   }
 
   // Update the description of Note object
   void updateDescription() {
-    note.description = descriptionController.text;
+    workouts.description = descriptionController.text;
   }
 
   // Save data to database
@@ -170,10 +170,10 @@ class NoteDetailState extends State<NoteDetail> {
     moveToLastScreen();
 
     int result;
-    if (note.id != null) {  // Case 1: Update operation
-      result = await helper.updateNote(note);
+    if (workouts.id != null) {  // Case 1: Update operation
+      result = await helper.updateNote(workouts);
     } else { // Case 2: Insert Operation
-      result = await helper.insertNote(note);
+      result = await helper.insertNote(workouts);
     }
 
     if (result != 0) {  // Success
@@ -190,13 +190,13 @@ class NoteDetailState extends State<NoteDetail> {
 
     // Case 1: If user is trying to delete the NEW NOTE i.e. he has come to
     // the detail page by pressing the FAB of NoteList page.
-    if (note.id == null) {
+    if (workouts.id == null) {
       _showAlertDialog('Status', 'No Note was deleted');
       return;
     }
 
     // Case 2: User is trying to delete the old note that already has a valid ID.
-    int result = await helper.deleteNote(note.id);
+    int result = await helper.deleteNote(workouts.id);
     if (result != 0) {
       _showAlertDialog('Status', 'Note Deleted Successfully');
     } else {

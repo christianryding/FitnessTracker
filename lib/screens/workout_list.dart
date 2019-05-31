@@ -1,29 +1,29 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import '../models/note.dart';
+import '../models/workouts.dart';
 import '../utils/database_helper.dart';
-import '../screens/note_detail.dart';
+import '../screens/workout_detail.dart';
 import 'package:sqflite/sqflite.dart';
 
-class NoteList extends StatefulWidget {
+class WorkoutList extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return NoteListState();
+    return WorkoutListState();
   }
 }
 
-class NoteListState extends State<NoteList> {
+class WorkoutListState extends State<WorkoutList> {
 
   DatabaseHelper databaseHelper = DatabaseHelper();
-  List<Note> noteList;
+  List<Workouts> workoutList;
   int count = 0;
 
   @override
   Widget build(BuildContext context) {
 
-    if (noteList == null) {
-      noteList = List<Note>();
+    if (workoutList == null) {
+      workoutList = List<Workouts>();
       updateListView();
     }
 
@@ -64,12 +64,12 @@ class NoteListState extends State<NoteList> {
               backgroundColor: Colors.blue,
               child: Icon(Icons.play_arrow),
             ),
-            title: Text(this.noteList[position].title, style: titleStyle,),
-            //subtitle: Text(this.noteList[position].date),
+            title: Text(this.workoutList[position].title, style: titleStyle,),
+            subtitle: Text(this.workoutList[position].description),
 
             onTap: () {
               debugPrint("ListTile Tapped");
-              navigateToDetail(this.noteList[position],this.noteList[position].title);
+              navigateToDetail(this.workoutList[position],this.workoutList[position].title);
             },
           ),
         );
@@ -92,7 +92,7 @@ class NoteListState extends State<NoteList> {
     }
   }
 
-  void _delete(BuildContext context, Note note) async {
+  void _delete(BuildContext context, Workouts note) async {
 
     int result = await databaseHelper.deleteNote(note.id);
     if (result != 0) {
@@ -107,9 +107,9 @@ class NoteListState extends State<NoteList> {
     Scaffold.of(context).showSnackBar(snackBar);
   }
 
-  void navigateToDetail(Note note, String title) async {
+  void navigateToDetail(Workouts note, String title) async {
     bool result = await Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return NoteDetail(note, title);
+      return WorkoutDetail(note, title);
     }));
 
     if (result == true) {
@@ -122,10 +122,10 @@ class NoteListState extends State<NoteList> {
     final Future<Database> dbFuture = databaseHelper.initializeDatabase();
     dbFuture.then((database) {
 
-      Future<List<Note>> noteListFuture = databaseHelper.getNoteList();
+      Future<List<Workouts>> noteListFuture = databaseHelper.getNoteList();
       noteListFuture.then((noteList) {
         setState(() {
-          this.noteList = noteList;
+          this.workoutList = noteList;
           this.count = noteList.length;
         });
       });

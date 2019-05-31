@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fitness_tracker/screens/home_page.dart';
 import 'package:fitness_tracker/screens/log_page.dart';
-import '../screens/note_list.dart';
+import '../screens/workout_list.dart';
 
 
 class Home extends StatefulWidget {
@@ -19,7 +19,7 @@ class HomeState extends State<Home> {
   final List<Widget> children = [
     HomePage(),
     LogPage(),
-    NoteList(),
+    WorkoutList(),
   ];
 
   /// Show current tab
