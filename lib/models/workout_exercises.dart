@@ -1,12 +1,14 @@
 import 'dart:convert';
+import 'exercise.dart';
 
 class WorkoutExercises {
-  WorkoutExercises();
 
+  WorkoutExercises();
   int id;
   String username;
   int exerciseId;
   int workoutId;
+  List<Exercise> exercises;
 
   static final columns = ["id", "username", "exerciseId", "workoutId"];
 

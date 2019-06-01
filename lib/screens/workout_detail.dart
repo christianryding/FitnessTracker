@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import '../models/workouts.dart';
+import '../models/workout.dart';
 import '../utils/database_helper.dart';
 import 'package:intl/intl.dart';
 import '../models/workout_exercises.dart';
@@ -8,7 +8,7 @@ import '../models/workout_exercises.dart';
 class WorkoutDetail extends StatefulWidget {
 
   final String appBarTitle;
-  final Workouts workout;
+  final Workout workout;
 
   WorkoutDetail(this. workout, this.appBarTitle);
 
@@ -24,7 +24,7 @@ class WorkoutDetailState extends State<WorkoutDetail> {
   DatabaseHelper helper = DatabaseHelper();
 
   String appBarTitle;
-  Workouts workouts;
+  Workout workouts;
 
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
@@ -38,6 +38,8 @@ class WorkoutDetailState extends State<WorkoutDetail> {
 
     titleController.text = workouts.title;
     descriptionController.text = workouts.description;
+
+    //_save();
 
     return WillPopScope(
 
@@ -137,15 +139,16 @@ class WorkoutDetailState extends State<WorkoutDetail> {
 
   /* TESTING */
   void _print()async{
-    /*User admin = new User();
-    admin.username = "admin";
-    admin = await helper.upsertUser(admin);
-    */
 
-    Workouts note = new Workouts("Breaking Story!","Some great content...");
-    var note2 = await helper.insertNote(note);
-    Workouts note3 = await helper.fetchNoteAndUser(1);
-    debugPrint("note 3 username = " + note3.user.username);
+    //Workouts note = new Workouts("Breaking Story!","Some great content...");
+    //var note2 = await helper.insertWorkout(note);
+
+    Workout note3 = await helper.fetchNoteAndUser(1);
+    debugPrint("note 3 username = " + note3.workoutExercises.username);
+    Workout note2 = await helper.fetchNoteAndUser(2);
+    debugPrint("note 2 username = " + note2.workoutExercises.username);
+    Workout note1 = await helper.fetchNoteAndUser(3);
+    debugPrint("note 1 username = " + note1.workoutExercises.username);
   }
   /* TESTING */
 
@@ -171,9 +174,9 @@ class WorkoutDetailState extends State<WorkoutDetail> {
 
     int result;
     if (workouts.id != null) {  // Case 1: Update operation
-      result = await helper.updateNote(workouts);
+      result = await helper.updateWorkout(workouts);
     } else { // Case 2: Insert Operation
-      result = await helper.insertNote(workouts);
+      result = await helper.insertWorkout(workouts);
     }
 
     if (result != 0) {  // Success
@@ -196,7 +199,7 @@ class WorkoutDetailState extends State<WorkoutDetail> {
     }
 
     // Case 2: User is trying to delete the old note that already has a valid ID.
-    int result = await helper.deleteNote(workouts.id);
+    int result = await helper.deleteWorkout(workouts.id);
     if (result != 0) {
       _showAlertDialog('Status', 'Note Deleted Successfully');
     } else {

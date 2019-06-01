@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import '../models/workouts.dart';
+import '../models/workout.dart';
 import '../utils/database_helper.dart';
 import '../screens/workout_detail.dart';
 import 'package:sqflite/sqflite.dart';
@@ -16,14 +16,14 @@ class WorkoutList extends StatefulWidget {
 class WorkoutListState extends State<WorkoutList> {
 
   DatabaseHelper databaseHelper = DatabaseHelper();
-  List<Workouts> workoutList;
+  List<Workout> workoutList;
   int count = 0;
 
   @override
   Widget build(BuildContext context) {
 
     if (workoutList == null) {
-      workoutList = List<Workouts>();
+      workoutList = List<Workout>();
       updateListView();
     }
 
@@ -92,9 +92,9 @@ class WorkoutListState extends State<WorkoutList> {
     }
   }
 
-  void _delete(BuildContext context, Workouts note) async {
+  void _delete(BuildContext context, Workout note) async {
 
-    int result = await databaseHelper.deleteNote(note.id);
+    int result = await databaseHelper.deleteWorkout(note.id);
     if (result != 0) {
       _showSnackBar(context, 'Note Deleted Successfully');
       updateListView();
@@ -107,7 +107,7 @@ class WorkoutListState extends State<WorkoutList> {
     Scaffold.of(context).showSnackBar(snackBar);
   }
 
-  void navigateToDetail(Workouts note, String title) async {
+  void navigateToDetail(Workout note, String title) async {
     bool result = await Navigator.push(context, MaterialPageRoute(builder: (context) {
       return WorkoutDetail(note, title);
     }));
@@ -122,7 +122,7 @@ class WorkoutListState extends State<WorkoutList> {
     final Future<Database> dbFuture = databaseHelper.initializeDatabase();
     dbFuture.then((database) {
 
-      Future<List<Workouts>> noteListFuture = databaseHelper.getNoteList();
+      Future<List<Workout>> noteListFuture = databaseHelper.getWorkoutList();
       noteListFuture.then((noteList) {
         setState(() {
           this.workoutList = noteList;

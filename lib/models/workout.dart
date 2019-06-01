@@ -1,17 +1,17 @@
 import 'workout_exercises.dart';
 
-class Workouts {
+class Workout {
 
   int _id;
   String _workoutTitle;
   String _workoutDescription;
-  WorkoutExercises user;
+  WorkoutExercises workoutExercises;
 
   static final columns = ["id", "title", "description"];
 
   // Constructors
-  Workouts(this._workoutTitle, [this._workoutDescription]);
-  Workouts.withId(this._id, this._workoutTitle, [this._workoutDescription]);
+  Workout(this._workoutTitle, [this._workoutDescription]);
+  Workout.withId(this._id, this._workoutTitle, [this._workoutDescription]);
 
   // Getters
   int get id => _id;
@@ -43,8 +43,8 @@ class Workouts {
     return map;
   }
 
-  // Extract a Note object from a Map object
-  Workouts.fromMapObject(Map<String, dynamic> map) {
+  // Extract a Workout object from a Map object
+  Workout.fromMapObject(Map<String, dynamic> map) {
     this._id = map['id'];
     this._workoutTitle = map['title'];
     this._workoutDescription = map['description'];
