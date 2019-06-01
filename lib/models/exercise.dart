@@ -22,7 +22,7 @@ class Exercise {
     }
   }
 
-  // Convert a Note object into a Map object
+  // Convert a Exercise object into a Map object
   Map<String, dynamic> toMap() {
 
     var map = Map<String, dynamic>();
@@ -34,7 +34,7 @@ class Exercise {
     return map;
   }
 
-  // Extract a Workout object from a Map object
+  // Extract a Exercise object from a Map object
   Exercise.fromMapObject(Map<String, dynamic> map) {
     this._id = map['id'];
     this._exerciseName = map['exercise_name'];

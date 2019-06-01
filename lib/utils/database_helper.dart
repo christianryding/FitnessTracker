@@ -41,13 +41,18 @@ class DatabaseHelper {
   Future<Database> initializeDatabase() async {
     // Get the directory path for both Android and iOS to store database.
     Directory directory = await getApplicationDocumentsDirectory();
-    String path = directory.path + 'notes39.db';
+    String path = directory.path + 'notes43.db';
 
     // Open/create the database at a given path
     var workoutsDatabase = await openDatabase(path, version: 1, onCreate: _createDb);
     return workoutsDatabase;
   }
 
+  /*
+  * Insert Values to database
+  *
+  *
+  */
   void _createDb(Database db, int newVersion) async {
 
     // Table for Workouts
@@ -73,15 +78,18 @@ class DatabaseHelper {
               id INTEGER PRIMARY KEY,
               username TEXT NOT NULL UNIQUE,
               exerciseId INTEGER,
-              workoutId INTEGER 
+              workoutId INTEGER,
+              'FOREIGN KEY exerciseId REFERENCES $exercisesTable (id) ) '
       )''');
     await db.execute('''
           INSERT INTO $workoutExercisesTable
             (id, username, exerciseId, workoutId)
           VALUES
-            (1,"admin2",1,1),
-            (2,"admin4",2,2),
-            (3,"admin3",3,3)'''
+            (1,"admin1",1,1),
+            (2,"admin2",2,2),
+            (3,"admin3",3,3),
+            (4,"admin4",2,1),
+            (5,"admin5",3,1)'''
     );
 
     // Exercise table
@@ -96,7 +104,11 @@ class DatabaseHelper {
           VALUES
             (1,"PullUps"),
             (2,"Situps"),
-            (3,"Chins")'''
+            (3,"Chins"),
+            (4,"Bench Press"),
+            (5,"Treadmill"),
+            (6,"Back"),
+            (7,"Row")'''
     );
   }
 
@@ -121,15 +133,6 @@ class DatabaseHelper {
     return result;
   }
 
-  // Fetch Operation: Get all Workout objects from database
-  Future<List<Map<String, dynamic>>> getWorkoutMapList() async {
-    Database db = await this.database;
-
-    //var result = await db.rawQuery('SELECT * FROM $workoutTable order by $colPriority ASC');
-    var result = await db.query(workoutTable);
-    return result;
-  }
-
   // Get number of Workout objects in database
   Future<int> getCount() async {
     Database db = await this.database;
@@ -138,12 +141,18 @@ class DatabaseHelper {
     return result;
   }
 
+  // Fetch Operation: Get all Workout objects from database
+  Future<List<Map<String, dynamic>>> getWorkoutMapList() async {
+    Database db = await this.database;
+    //var result = await db.rawQuery('SELECT * FROM $workoutTable order by $colPriority ASC');
+    var result = await db.query(workoutTable);
+    return result;
+  }
+
   // Get the 'Map List' [ List<Map> ] and convert it to 'Workout List' [ List<Workouts> ]
   Future<List<Workout>> getWorkoutList() async {
-
     var workoutMapList = await getWorkoutMapList(); // Get 'Map List' from database
     int count = workoutMapList.length;         // Count the number of map entries in db table
-
     List<Workout> workoutList = List<Workout>();
 
     // For loop to create a 'Workout List' from a 'Map List'
@@ -158,7 +167,7 @@ class DatabaseHelper {
   Future<WorkoutExercises> upsertWorkoutExercises(WorkoutExercises workoutExercises) async {
     var count = Sqflite.firstIntValue(await _database.rawQuery("SELECT COUNT(*) FROM user WHERE username = ?", [workoutExercises.username]));
     if (count == 0) {
-      workoutExercises.id = await _database.insert("workout_exercises_table", workoutExercises.toMap());
+      workoutExercises.id = await _database.insert(workoutExercisesTable, workoutExercises.toMap());
     } else {
       await _database.update("workout_exercises_table", workoutExercises.toMap(), where: "id = ?", whereArgs: [workoutExercises.id]);
     }
@@ -167,14 +176,14 @@ class DatabaseHelper {
 
   // Fetch Workout exercise with specific id
   Future<WorkoutExercises> fetchWorkoutExercises(int id) async {
-    List<Map> results = await _database.query("workout_exercises_table", columns: WorkoutExercises.columns, where: "id = ?", whereArgs: [id]);
+    List<Map> results = await _database.query(workoutExercisesTable, columns: WorkoutExercises.columns, where: "id = ?", whereArgs: [id]);
     WorkoutExercises workoutExercises = WorkoutExercises.fromMap(results[0]);
     return workoutExercises;
   }
 
-  Future<Workout> fetchNoteAndUser(int noteId) async {
-    List<Map> results = await _database.query(workoutTable, columns: Workout.columns, where: "id = ?", whereArgs: [noteId]);
-
+  // Fetch
+  Future<Workout> fetchWorkoutAndWorkoutExercises(int workoutId) async {
+    List<Map> results = await _database.query(workoutTable, columns: Workout.columns, where: "id = ?", whereArgs: [workoutId]);
     Workout workouts = Workout.fromMapObject(results[0]);
     workouts.workoutExercises = await fetchWorkoutExercises(workouts.id);
 

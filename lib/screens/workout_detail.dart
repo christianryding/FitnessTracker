@@ -140,15 +140,24 @@ class WorkoutDetailState extends State<WorkoutDetail> {
   /* TESTING */
   void _print()async{
 
-    //Workouts note = new Workouts("Breaking Story!","Some great content...");
-    //var note2 = await helper.insertWorkout(note);
+    List<Workout> workoutList = await helper.getWorkoutList();
+    for(int i = 0; i<workoutList.length; i++){
 
-    Workout note3 = await helper.fetchNoteAndUser(1);
-    debugPrint("note 3 username = " + note3.workoutExercises.username);
-    Workout note2 = await helper.fetchNoteAndUser(2);
-    debugPrint("note 2 username = " + note2.workoutExercises.username);
-    Workout note1 = await helper.fetchNoteAndUser(3);
-    debugPrint("note 1 username = " + note1.workoutExercises.username);
+      Workout workout = await helper.fetchWorkoutAndWorkoutExercises(workoutList[i].id);
+
+      // Workout object
+      debugPrint("WorkoutId = " + workout.id.toString());
+      debugPrint("WorkoutTitle = " + workout.title);
+      debugPrint("WorkoutDesc = " + workout.description);
+
+      // WorkoutExercises object
+      debugPrint("username = " + workout.workoutExercises.username);
+      debugPrint("id = " + workout.workoutExercises.id.toString());
+      debugPrint("exerciseId = " + workout.workoutExercises.exerciseId.toString());
+      debugPrint("workoutId = " + workout.workoutExercises.workoutId.toString());
+
+
+    }
   }
   /* TESTING */
 
