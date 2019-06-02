@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import '../models/workout.dart';
-import '../utils/database_helper.dart';
+import 'package:fitness_tracker/models/workout.dart';
+import 'package:fitness_tracker/utils/database_helper.dart';
 import 'package:intl/intl.dart';
-import '../models/workout_exercises.dart';
+import 'package:fitness_tracker/models/workout_junction.dart';
+import 'package:fitness_tracker/models/exercise.dart';
 
 class WorkoutDetail extends StatefulWidget {
 
@@ -140,9 +141,10 @@ class WorkoutDetailState extends State<WorkoutDetail> {
   /* TESTING */
   void _print()async{
 
+
+
     List<Workout> workoutList = await helper.getWorkoutList();
     for(int i = 0; i<workoutList.length; i++){
-
       Workout workout = await helper.fetchWorkoutAndWorkoutExercises(workoutList[i].id);
 
       // Workout object
@@ -155,9 +157,19 @@ class WorkoutDetailState extends State<WorkoutDetail> {
       debugPrint("id = " + workout.workoutExercises.id.toString());
       debugPrint("exerciseId = " + workout.workoutExercises.exerciseId.toString());
       debugPrint("workoutId = " + workout.workoutExercises.workoutId.toString());
-
-
     }
+
+
+    List<Exercise> exercises = List<Exercise>();
+    exercises = await helper.fetchExercises();
+
+    for(int i = 0; i<exercises.length; i++) {
+
+      debugPrint("test exercise " + i.toString() + " = " + exercises[i].id.toString());
+      debugPrint("test exercise " + exercises[i].exerciseName);
+    }
+
+
   }
   /* TESTING */
 

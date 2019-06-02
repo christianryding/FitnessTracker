@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import '../models/workout.dart';
-import '../utils/database_helper.dart';
-import '../screens/workout_detail.dart';
+import 'package:fitness_tracker/models/workout.dart';
+import 'package:fitness_tracker/utils/database_helper.dart';
+import 'package:fitness_tracker/screens/workout_detail.dart';
 import 'package:sqflite/sqflite.dart';
 
 class WorkoutList extends StatefulWidget {
@@ -122,8 +122,8 @@ class WorkoutListState extends State<WorkoutList> {
     final Future<Database> dbFuture = databaseHelper.initializeDatabase();
     dbFuture.then((database) {
 
-      Future<List<Workout>> noteListFuture = databaseHelper.getWorkoutList();
-      noteListFuture.then((noteList) {
+      Future<List<Workout>> workoutListFuture = databaseHelper.getWorkoutList();
+      workoutListFuture.then((noteList) {
         setState(() {
           this.workoutList = noteList;
           this.count = noteList.length;

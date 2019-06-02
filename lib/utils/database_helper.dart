@@ -2,8 +2,9 @@ import 'package:sqflite/sqflite.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
-import '../models/workout.dart';
-import '../models/workout_exercises.dart';
+import 'package:fitness_tracker/models/workout.dart';
+import 'package:fitness_tracker/models/workout_junction.dart';
+import 'package:fitness_tracker/models/exercise.dart';
 
 class DatabaseHelper {
 
@@ -17,16 +18,22 @@ class DatabaseHelper {
   String colDescription = 'description';
 
   // Workout exercises table
-  String workoutExercisesTable = 'workout_exercises_table';
+  String workoutExercisesTable = 'workout_junction_table';
+  String colWorkoutExerciseId = 'id';
+  String colWorkoutJunctionId = 'workout_junction_id';
+  String colExerciseId = 'exercise_id';
 
   // Exercises table
   String exercisesTable = 'exercises_table';
+  String colExercisesId = 'id';
+  String colExercisesName = 'exercise_name';
 
   DatabaseHelper._createInstance(); // Named constructor to create instance of DatabaseHelper
 
+  // Singleton object
   factory DatabaseHelper() {
     if (_databaseHelper == null) {
-      _databaseHelper = DatabaseHelper._createInstance(); // This is executed only once, singleton object
+      _databaseHelper = DatabaseHelper._createInstance();
     }
     return _databaseHelper;
   }
@@ -41,7 +48,7 @@ class DatabaseHelper {
   Future<Database> initializeDatabase() async {
     // Get the directory path for both Android and iOS to store database.
     Directory directory = await getApplicationDocumentsDirectory();
-    String path = directory.path + 'notes43.db';
+    String path = directory.path + 'notes58.db';
 
     // Open/create the database at a given path
     var workoutsDatabase = await openDatabase(path, version: 1, onCreate: _createDb);
@@ -75,32 +82,32 @@ class DatabaseHelper {
     // Table for Workout exercises
     await db.execute('''
       CREATE TABLE $workoutExercisesTable (
-              id INTEGER PRIMARY KEY,
+              $colWorkoutExerciseId INTEGER PRIMARY KEY,
               username TEXT NOT NULL UNIQUE,
-              exerciseId INTEGER,
-              workoutId INTEGER,
-              'FOREIGN KEY exerciseId REFERENCES $exercisesTable (id) ) '
+              $colExerciseId INTEGER,
+              $colWorkoutJunctionId INTEGER,
+              'FOREIGN KEY $colExerciseId REFERENCES $exercisesTable (id) ) '
       )''');
     await db.execute('''
           INSERT INTO $workoutExercisesTable
-            (id, username, exerciseId, workoutId)
+            ($colWorkoutExerciseId, username, $colExerciseId, $colWorkoutJunctionId)
           VALUES
             (1,"admin1",1,1),
             (2,"admin2",2,2),
             (3,"admin3",3,3),
-            (4,"admin4",2,1),
-            (5,"admin5",3,1)'''
+            (4,"admin4",4,1),
+            (5,"admin5",5,1)'''
     );
 
     // Exercise table
     await db.execute('''
       CREATE TABLE $exercisesTable (
-        id INTEGER PRIMARY KEY, 
-        exerciseName TEXT
+        $colExercisesId INTEGER PRIMARY KEY, 
+        $colExercisesName TEXT
     )''');
     await db.execute('''
           INSERT INTO $exercisesTable
-            (id, exerciseName)
+            ($colExercisesId, $colExercisesName)
           VALUES
             (1,"PullUps"),
             (2,"Situps"),
@@ -162,9 +169,7 @@ class DatabaseHelper {
     return workoutList;
   }
 
-
-
-  Future<WorkoutExercises> upsertWorkoutExercises(WorkoutExercises workoutExercises) async {
+  Future<WorkoutJunction> upsertWorkoutExercises(WorkoutJunction workoutExercises) async {
     var count = Sqflite.firstIntValue(await _database.rawQuery("SELECT COUNT(*) FROM user WHERE username = ?", [workoutExercises.username]));
     if (count == 0) {
       workoutExercises.id = await _database.insert(workoutExercisesTable, workoutExercises.toMap());
@@ -175,9 +180,9 @@ class DatabaseHelper {
   }
 
   // Fetch Workout exercise with specific id
-  Future<WorkoutExercises> fetchWorkoutExercises(int id) async {
-    List<Map> results = await _database.query(workoutExercisesTable, columns: WorkoutExercises.columns, where: "id = ?", whereArgs: [id]);
-    WorkoutExercises workoutExercises = WorkoutExercises.fromMap(results[0]);
+  Future<WorkoutJunction> fetchWorkoutExercises(int id) async {
+    List<Map> results = await _database.query(workoutExercisesTable, columns: WorkoutJunction.columns, where: "id = ?", whereArgs: [id]);
+    WorkoutJunction workoutExercises = WorkoutJunction.fromMap(results[0]);
     return workoutExercises;
   }
 
@@ -189,4 +194,33 @@ class DatabaseHelper {
 
     return workouts;
   }
+
+
+  // Fetch all Exercise objects
+  Future <List<Exercise>> fetchExercises() async {
+    var result = await _database.rawQuery('SELECT * FROM $exercisesTable');
+    List<Exercise> exercises = List<Exercise>();
+
+    for(int  i= 0; i< result.length; i++){
+      exercises.add(Exercise.fromMapObject(result[i]));
+    }
+
+    return exercises;
+  }
+
+
+
+  // Fetch all Exercise objects
+  Future <List<Exercise>> fetchExercisesFromJunction() async {
+    var result = await _database.rawQuery('SELECT * FROM $workoutExercisesTable WHERE $colWorkoutJunctionId = ?', [colWorkoutJunctionId]);
+    List<Exercise> exercises = List<Exercise>();
+
+    for(int  i= 0; i< result.length; i++){
+      exercises.add(Exercise.fromMapObject(result[i]));
+    }
+
+    return exercises;
+  }
+
+
 }

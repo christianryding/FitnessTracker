@@ -1,11 +1,11 @@
-import 'workout_exercises.dart';
+import 'workout_junction.dart';
 
 class Workout {
 
   int _id;
   String _workoutTitle;
   String _workoutDescription;
-  WorkoutExercises workoutExercises;
+  WorkoutJunction workoutExercises;
 
   static final columns = ["id", "title", "description"];
 

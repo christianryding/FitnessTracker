@@ -1,22 +1,22 @@
 import 'dart:convert';
 import 'exercise.dart';
 
-class WorkoutExercises {
+class WorkoutJunction {
 
-  WorkoutExercises();
+  WorkoutJunction();
   int id;
   String username;
   int exerciseId;
   int workoutId;
   List<Exercise> exercises;
 
-  static final columns = ["id", "username", "exerciseId", "workoutId"];
+  static final columns = ["id", "username", "exercise_id", "workout_junction_id"];
 
   Map toMap() {
     Map map = {
       "username": username,
-      "exerciseId": exerciseId,
-      "workoutId": workoutId,
+      "exercise_id": exerciseId,
+      "workout_junction_id": workoutId,
     };
 
     if (id != null) {
@@ -27,11 +27,11 @@ class WorkoutExercises {
   }
 
   static fromMap(Map map) {
-    WorkoutExercises workoutExercises = new WorkoutExercises();
+    WorkoutJunction workoutExercises = new WorkoutJunction();
     workoutExercises.id = map["id"];
     workoutExercises.username = map["username"];
-    workoutExercises.exerciseId = map["exerciseId"];
-    workoutExercises.workoutId = map["workoutId"];
+    workoutExercises.exerciseId = map["exercise_id"];
+    workoutExercises.workoutId = map["workout_junction_id"];
 
     return workoutExercises;
   }
