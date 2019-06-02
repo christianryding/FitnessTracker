@@ -195,7 +195,6 @@ class DatabaseHelper {
     return workouts;
   }
 
-
   // Fetch all Exercise objects
   Future <List<Exercise>> fetchExercises() async {
     var result = await _database.rawQuery('SELECT * FROM $exercisesTable');
@@ -207,20 +206,5 @@ class DatabaseHelper {
 
     return exercises;
   }
-
-
-
-  // Fetch all Exercise objects
-  Future <List<Exercise>> fetchExercisesFromJunction() async {
-    var result = await _database.rawQuery('SELECT * FROM $workoutExercisesTable WHERE $colWorkoutJunctionId = ?', [colWorkoutJunctionId]);
-    List<Exercise> exercises = List<Exercise>();
-
-    for(int  i= 0; i< result.length; i++){
-      exercises.add(Exercise.fromMapObject(result[i]));
-    }
-
-    return exercises;
-  }
-
 
 }
