@@ -14,7 +14,7 @@ class WorkoutList extends StatefulWidget {
 
 class WorkoutListState extends State<WorkoutList> {
 
-  int groupValue;
+  int groupValue = 1;
   DatabaseHelper dbHelper = new DatabaseHelper();
   List<Workout> workoutList;
   int count;
@@ -49,6 +49,7 @@ class WorkoutListState extends State<WorkoutList> {
       itemBuilder: (BuildContext context, int position) {
         return new RadioListTile(
 
+          //title: Text("ADasd"),
           title: Text(this.workoutList[position].name, style: titleStyle),
 
             value: workoutList[position].id,
