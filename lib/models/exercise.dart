@@ -1,11 +1,10 @@
 
 
 class Exercise {
-
   int _id;
   String _exerciseName;
 
-  static final columns = ["id", "exercise_name"];
+  static final columns = ["ExerciseID", "ExerciseName"];
 
   // Constructors
   Exercise(this._exerciseName);
@@ -16,9 +15,9 @@ class Exercise {
   String get exerciseName => _exerciseName;
 
   // Setters
-  set exerciseName(String newExerciseNameTitle) {
-    if (newExerciseNameTitle.length <= 255) {
-      this._exerciseName = newExerciseNameTitle;
+  set exerciseName(String newExerciseName) {
+    if (newExerciseName.length <= 255) {
+      this._exerciseName = newExerciseName;
     }
   }
 
@@ -27,17 +26,17 @@ class Exercise {
 
     var map = Map<String, dynamic>();
     if (id != null) {
-      map['id'] = _id;
+      map['ExerciseID'] = _id;
     }
-    map['exercise_name'] = _exerciseName;
+    map['ExerciseName'] = _exerciseName;
 
     return map;
   }
 
   // Extract a Exercise object from a Map object
   Exercise.fromMapObject(Map<String, dynamic> map) {
-    this._id = map['id'];
-    this._exerciseName = map['exercise_name'];
+    this._id = map['ExerciseID'];
+    this._exerciseName = map['ExerciseName'];
   }
 }
 

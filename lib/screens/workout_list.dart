@@ -65,7 +65,7 @@ class WorkoutListState extends State<WorkoutList> {
               child: Icon(Icons.play_arrow),
             ),
             title: Text(this.workoutList[position].title, style: titleStyle,),
-            subtitle: Text(this.workoutList[position].description),
+            //subtitle: Text(this.workoutList[position].description),
 
             onTap: () {
               debugPrint("ListTile Tapped");

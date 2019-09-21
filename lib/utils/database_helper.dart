@@ -191,7 +191,7 @@ class DatabaseHelper {
   Future<Workout> fetchWorkoutAndWorkoutExercises(int workoutId) async {
     List<Map> results = await _database.query(workoutTable, columns: Workout.columns, where: "id = ?", whereArgs: [workoutId]);
     Workout workouts = Workout.fromMapObject(results[0]);
-    workouts.workoutExercises = await fetchWorkoutExercises(workouts.id);
+    //workouts.workoutExercises = await fetchWorkoutExercises(workouts.id);
 
     return workouts;
   }
