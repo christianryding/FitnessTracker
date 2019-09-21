@@ -14,7 +14,7 @@ class DatabaseHelper {
   // Workout table
   String workoutTable = 'workout_table';
   String colId = 'id';
-  String colTitle = 'title';
+  String colName = 'title';
   String colDescription = 'description';
 
   // Workout exercises table
@@ -48,7 +48,7 @@ class DatabaseHelper {
   Future<Database> initializeDatabase() async {
     // Get the directory path for both Android and iOS to store database.
     Directory directory = await getApplicationDocumentsDirectory();
-    String path = directory.path + 'notes58.db';
+    String path = directory.path + 'notes60.db';
 
     // Open/create the database at a given path
     var workoutsDatabase = await openDatabase(path, version: 1, onCreate: _createDb);
@@ -57,8 +57,6 @@ class DatabaseHelper {
 
   /*
   * Insert Values to database
-  *
-  *
   */
   void _createDb(Database db, int newVersion) async {
 
@@ -66,13 +64,13 @@ class DatabaseHelper {
     await db.execute('''
       CREATE TABLE $workoutTable (
         $colId INTEGER PRIMARY KEY AUTOINCREMENT, 
-        $colTitle TEXT, 
+        $colName TEXT, 
         $colDescription TEXT, 
         'FOREIGN KEY ($colId) REFERENCES $workoutExercisesTable (id) ) '
     )''');
     await db.execute('''
           INSERT INTO $workoutTable
-            ($colId, $colTitle,$colDescription)
+            ($colId, $colName,$colDescription)
           VALUES
             (1,"Summer PreWorkout", "Get ready for the beach!"),
             (2,"Winter PreWorkout", "Hmmmm...."),
@@ -171,11 +169,14 @@ class DatabaseHelper {
 
   Future<WorkoutJunction> upsertWorkoutExercises(WorkoutJunction workoutExercises) async {
     var count = Sqflite.firstIntValue(await _database.rawQuery("SELECT COUNT(*) FROM user WHERE username = ?", [workoutExercises.username]));
+    
     if (count == 0) {
       workoutExercises.id = await _database.insert(workoutExercisesTable, workoutExercises.toMap());
-    } else {
+    } 
+    else {
       await _database.update("workout_exercises_table", workoutExercises.toMap(), where: "id = ?", whereArgs: [workoutExercises.id]);
     }
+
     return workoutExercises;
   }
 

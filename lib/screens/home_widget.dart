@@ -19,7 +19,8 @@ class HomeState extends State<Home> {
   final List<Widget> children = [
     HomePage(),
     LogPage(),
-    WorkoutList(),
+    //WorkoutList(),
+        LogPage(),
   ];
 
   /// Show current tab
