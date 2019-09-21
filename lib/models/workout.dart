@@ -12,7 +12,7 @@ class Workout {
 
   // Getters
   int get id => _id;
-  String get title => _name;
+  String get name => _name;
   int get active => _active;
 
   // Setters

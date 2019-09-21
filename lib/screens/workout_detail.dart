@@ -37,7 +37,7 @@ class WorkoutDetailState extends State<WorkoutDetail> {
 
     TextStyle textStyle = Theme.of(context).textTheme.title;
 
-    titleController.text = workouts.title;
+    titleController.text = workouts.name;
     descriptionController.text = workouts.active.toString();
 
     //_save();
@@ -149,7 +149,7 @@ class WorkoutDetailState extends State<WorkoutDetail> {
 
       // Workout object
       debugPrint("WorkoutId = " + workout.id.toString());
-      debugPrint("WorkoutTitle = " + workout.title);
+      debugPrint("WorkoutTitle = " + workout.name);
       debugPrint("WorkoutDesc = " + workout.active.toString());
 
     }

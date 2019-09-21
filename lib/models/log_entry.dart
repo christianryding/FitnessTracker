@@ -3,42 +3,47 @@ import 'dart:convert';
 class LogEntry {
 
   LogEntry();
-  int id;
-  int logID;
-  int workoutCollectionID;
-  int setNumber;
-  int weightLogged;
-  int reps;
+  int _id;
+  int _logID;
+  int _workoutCollectionID;
+  int _setNumber;
+  int _weightLogged;
+  int _reps;
 
-  static final columns = ["id", "log_id", "workout_collection_id", "set_number, weight_logged, reps"];
+  static final columns = ["LogEntriesID", "LogID", "WorkoutCollectionID", "SetNumber, WeightLogged, Reps"];
 
   // Getters
-  int get weight_logged => weightLogged;
+  int get id => _id;
+  int get logID => _logID;
+  int get workoutCollectionID => _workoutCollectionID;
+  int get setNumber => _setNumber;
+  int get weightLogged => _weightLogged;
+  int get reps => _reps;
 
   Map toMap() {
     Map map = {
-      "log_id": logID,
-      "workout_collection_id": workoutCollectionID,
-      "set_number": setNumber,
-      "weight_logged": weightLogged,
-      "reps": reps,
+      "LogID": _logID,
+      "WorkoutCollectionID": _workoutCollectionID,
+      "SetNumber": _setNumber,
+      "WeightLogged": _weightLogged,
+      "Reps": _reps,
     };
 
-    if (id != null) {
-      map["id"] = id;
+    if (_id != null) {
+      map["LogEntriesID"] = _id;
     }
 
     return map;
   }
 
-  static fromMap(Map map) {
+  static fromMapObject(Map map) {
     LogEntry logEntry = new LogEntry();
-    logEntry.id = map["id"];
-    logEntry.logID = map["logID"];
-    logEntry.workoutCollectionID = map["workout_collection_id"];
-    logEntry.setNumber = map["set_number"];
-    logEntry.weightLogged = map["weight_logged"];
-    logEntry.reps = map["reps"];
+    logEntry._id = map["LogEntriesID"];
+    logEntry._logID = map["LogID"];
+    logEntry._workoutCollectionID = map["WorkoutCollectionID"];
+    logEntry._setNumber = map["SetNumber"];
+    logEntry._weightLogged = map["WeightLogged"];
+    logEntry._reps = map["Reps"];
 
     return logEntry;
   }

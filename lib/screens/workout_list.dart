@@ -64,12 +64,12 @@ class WorkoutListState extends State<WorkoutList> {
               backgroundColor: Colors.blue,
               child: Icon(Icons.play_arrow),
             ),
-            title: Text(this.workoutList[position].title, style: titleStyle,),
+            title: Text(this.workoutList[position].name, style: titleStyle,),
             //subtitle: Text(this.workoutList[position].description),
 
             onTap: () {
               debugPrint("ListTile Tapped");
-              navigateToDetail(this.workoutList[position],this.workoutList[position].title);
+              navigateToDetail(this.workoutList[position],this.workoutList[position].name);
             },
           ),
         );

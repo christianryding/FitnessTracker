@@ -40,7 +40,7 @@ class DatabaseHelper {
 
     // Get a location using getDatabasesPath
     var databasesPath = await getDatabasesPath();
-    String path = join(databasesPath, 'notes70.db');
+    String path = join(databasesPath, 'notes75.db');
 
     // Open/create the database at a given path
     var workoutsDatabase = await openDatabase(path, version: 1, onCreate: _createDb);
@@ -58,13 +58,13 @@ class DatabaseHelper {
   // Workout Collection table
   await db.execute("CREATE TABLE WorkoutCollection (WorkoutCollectionID INTEGER NOT NULL PRIMARY KEY,	ExerciseID INTEGER NOT NULL,	WorkoutID INTEGER NOT NULL,   FOREIGN KEY (ExerciseId) REFERENCES Exercises(ExerciseID), FOREIGN KEY (WorkoutID) REFERENCES Workout(WorkoutID))");
   // Exercises table
-  await db.execute("CREATE TABLE Exercises (ExerciseID INTEGER NOT NULL PRIMARY KEY, ExerciseName TEXT NOT NULL )");
+  await db.execute("CREATE TABLE Exercises (ExerciseID INTEGER NOT NULL PRIMARY KEY, ExerciseName TEXT NOT NULL)");
   // Workout Log table
-  await db.execute("CREATE TABLE WorkoutLog (WorkoutLogID INTEGER NOT NULL PRIMARY KEY,	WorkoutID INTEGER NOT NULL,	Date_Time TEXT, FOREIGN KEY (WorkoutID) REFERENCES Workout(WorkoutID)");
+  await db.execute("CREATE TABLE WorkoutLog (WorkoutLogID INTEGER NOT NULL PRIMARY KEY, Workout_ID INTEGER NOT NULL, FOREIGN KEY (Workout_ID) REFERENCES Workout(WorkoutID) )");
   // Log Entries table
-  await db.execute("CREATE TABLE LogEntries (	LogEntriesID INTEGER NOT NULL PRIMARY KEY, LogID INTEGER NOT NULL, WorkoutCollectionID INTEGER NOT NULL, SetNumber INTEGER NOT NULL, WeightLogged  INTEGER NOT NULL, Reps INTEGER NOT NULL, FOREIGN KEY (LogID) REFERENCES WorkoutLog(WorkoutLogID), FOREIGN KEY (WorkoutCollectionID) REFERENCES WorkoutCollection(WorkoutCollectionID)");
+  await db.execute("CREATE TABLE LogEntries (LogEntriesID INTEGER NOT NULL PRIMARY KEY, LogID INTEGER NOT NULL, WorkoutCollectionID INTEGER NOT NULL, SetNumber INTEGER NOT NULL, WeightLogged  INTEGER NOT NULL, Reps INTEGER NOT NULL, FOREIGN KEY (LogID) REFERENCES WorkoutLog(WorkoutLogID), FOREIGN KEY (WorkoutCollectionID) REFERENCES WorkoutCollection(WorkoutCollectionID) )");
   // Workout Targets table
-  await db.execute("CREATE TABLE WorkoutTargets (WorkoutTargetsID INTEGER NOT NULL PRIMARY KEY,	WorkoutCollectionID INTEGER NOT NULL,SetNumber INTEGER NOT NULL,MinReps INTEGER NOT NULL,	MaxReps INTEGER NOT NULL,    FOREIGN KEY (WorkoutCollectionID) REFERENCES WorkoutCollection(WorkoutCollectionID)");
+  await db.execute("CREATE TABLE WorkoutTargets (WorkoutTargetsID INTEGER NOT NULL PRIMARY KEY,	WorkoutCollectionID INTEGER NOT NULL,SetNumber INTEGER NOT NULL,MinReps INTEGER NOT NULL,	MaxReps INTEGER NOT NULL,    FOREIGN KEY (WorkoutCollectionID) REFERENCES WorkoutCollection(WorkoutCollectionID) )");
 
     await db.execute('''
           INSERT INTO Workout
@@ -93,7 +93,7 @@ class DatabaseHelper {
             (4,"Running")
             '''
     );
-    await db.execute('''
+    /*await db.execute('''
       INSERT INTO WorkoutLog (WorkoutLogID,WorkoutID, Date_Time)
         VALUES
         (1, 1, "1_log for program 1"),
@@ -117,6 +117,8 @@ class DatabaseHelper {
         (3,3,3,8,12)
         '''
      );
+     */
+
 }
 
 
@@ -137,6 +139,47 @@ class DatabaseHelper {
       workoutList.add(Workout.fromMapObject(workoutMapList[i]));
     }
     return workoutList;
+  }
+
+
+  // Get the 'Map List' [ List<Map> ] and convert it to 'Exercise List' [ List<Exercise> ]
+  Future<List<Exercise>> getExercisesList() async {
+
+    Database db = await this.database;
+
+    // get workout map list
+    var exercisesMapList = await db.query("Exercises");
+
+    int count = exercisesMapList.length;
+    List<Exercise> exercisesList = List<Exercise>();
+
+    // For loop to create a 'Workout List' from a 'Map List'
+    for (int i = 0; i < count; i++) {
+      exercisesList.add(Exercise.fromMapObject(exercisesMapList[i]));
+    }
+    return exercisesList;
+  }
+
+
+  // Get the 'Map List' [ List<Map> ] and convert it to 'Log Entry List' [ List<LogEntry> ]
+  Future<List<LogEntry>> getLogEntriesList() async {
+
+    Database db = await this.database;
+
+    var logEntriesMapList = await db.query("WorkoutTargets");
+
+    // get workout map list
+    //var logEntriesMapList = await db.query("LogEntries");
+
+    //int count = logEntriesMapList.length;
+    List<LogEntry> logEntriesList = List<LogEntry>();
+
+    int count = 1;
+    // For loop to create a 'Workout List' from a 'Map List'
+    for (int i = 0; i < count; i++) {
+      //logEntriesList.add(LogEntry.fromMapObject(logEntriesMapList[i]));
+    }
+    return logEntriesList;
   }
   
 
