@@ -1,5 +1,3 @@
-import 'workout_junction.dart';
-
 class Workout {
 
   int _id;
@@ -9,8 +7,8 @@ class Workout {
   static final columns = ["WorkoutID", "WorkoutName", "WorkoutActive"];
 
   // Constructors
-  Workout(this._name, [this._active]);
-  Workout.withId(this._id, this._name, [this._active]);
+  Workout(this._name,this._active);
+  Workout.withId(this._id, this._name, this._active);
 
   // Getters
   int get id => _id;
@@ -18,20 +16,17 @@ class Workout {
   int get active => _active;
 
   // Setters
-  set title(String newName) {
+  set name(String newName) {
     if (newName.length <= 255) {
       this._name = newName;
     }
   }
-  set description(int newActive) {
-    if (newDescription.length <= 255) {
-      this._active = newActive;
-    }
+  set active(int newActive) {
+    this._active = newActive;
   }
 
   // Convert a Workout object into a Map object
   Map<String, dynamic> toMap() {
-
     var map = Map<String, dynamic>();
     if (id != null) {
       map['WorkoutID'] = _id;

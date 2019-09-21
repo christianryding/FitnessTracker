@@ -38,7 +38,7 @@ class WorkoutDetailState extends State<WorkoutDetail> {
     TextStyle textStyle = Theme.of(context).textTheme.title;
 
     titleController.text = workouts.title;
-    descriptionController.text = workouts.description;
+    descriptionController.text = workouts.active.toString();
 
     //_save();
 
@@ -150,13 +150,8 @@ class WorkoutDetailState extends State<WorkoutDetail> {
       // Workout object
       debugPrint("WorkoutId = " + workout.id.toString());
       debugPrint("WorkoutTitle = " + workout.title);
-      debugPrint("WorkoutDesc = " + workout.description);
+      debugPrint("WorkoutDesc = " + workout.active.toString());
 
-      // WorkoutExercises object
-      debugPrint("username = " + workout.workoutExercises.username);
-      debugPrint("id = " + workout.workoutExercises.id.toString());
-      debugPrint("exerciseId = " + workout.workoutExercises.exerciseId.toString());
-      debugPrint("workoutId = " + workout.workoutExercises.workoutId.toString());
     }
 
 
@@ -180,12 +175,11 @@ class WorkoutDetailState extends State<WorkoutDetail> {
 
   // Update the title of Note object
   void updateTitle(){
-    workouts.title = titleController.text;
+    workouts.name = titleController.text;
   }
 
   // Update the description of Note object
   void updateDescription() {
-    workouts.description = descriptionController.text;
   }
 
   // Save data to database

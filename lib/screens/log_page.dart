@@ -30,24 +30,14 @@ developer.log('log me', name: 'my.app.category');
 void print() async{
 
 DatabaseHelper db = new DatabaseHelper();
-  Future<List<Map<String, dynamic>>> list = db.getWorkoutMapList();
 
-
-    List<Workout> workoutList = await db.getWorkoutList();
-    for(int i = 0; i<workoutList.length; i++){
-      Workout workout = workoutList[i];
-
-      // Workout object
-      debugPrint("WorkoutId = " + workout.id.toString());
-      debugPrint("WorkoutTitle = " + workout.title);
-      //debugPrint("WorkoutDesc = " + workout.);
-
-      // WorkoutExercises object
-      //debugPrint("username = " + workout.workoutExercises.username);
-      //debugPrint("id = " + workout.workoutExercises.id.toString());
-      //debugPrint("exerciseId = " + workout.workoutExercises.exerciseId.toString());
-      //debugPrint("workoutId = " + workout.workoutExercises.workoutId.toString());
-    }
+  List<Workout> workoutList = await db.getWorkoutList();
+  for(int i = 0; i<workoutList.length; i++){
+    Workout workout = workoutList[i];
+    debugPrint("WorkoutId = " + workout.id.toString());
+    debugPrint("WorkoutTitle = " + workout.title);
+    debugPrint("WorkoutActive = " + workout.active.toString());
+  }
 
 
 
