@@ -44,7 +44,7 @@ DatabaseHelper db = new DatabaseHelper();
 */
 
   List<LogEntry> logEntriesList = await db.getLogEntriesList();
-  /*for(int i = 0; i<logEntriesList.length; i++){
+  for(int i = 0; i<logEntriesList.length; i++){
     LogEntry logEntry = logEntriesList[i];
     debugPrint("Log Entry ID= " + logEntry.id.toString());
     debugPrint("Log Entry Log Id = " + logEntry.logID.toString());
@@ -53,7 +53,7 @@ DatabaseHelper db = new DatabaseHelper();
     debugPrint("Log Entry Weight Logged= " + logEntry.weightLogged.toString());
     debugPrint("Log Entry Reps = " + logEntry.reps.toString());
   }
-  */
+
 
 
 
