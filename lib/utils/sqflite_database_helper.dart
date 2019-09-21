@@ -176,6 +176,15 @@ class DatabaseHelper {
     }
     return logEntriesList;
   }
+
+
+
+//  Future<int> getActiveProgram() async{
+//
+//
+//    return 3;
+//  }
+
   
 
-}
+}// DatabaseHelper
