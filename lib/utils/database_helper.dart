@@ -3,7 +3,6 @@ import 'dart:async';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:fitness_tracker/models/workout.dart';
-import 'package:fitness_tracker/models/workout_junction.dart';
 import 'package:fitness_tracker/models/exercise.dart';
 
 class DatabaseHelper {
@@ -167,6 +166,7 @@ class DatabaseHelper {
     return workoutList;
   }
 
+  /*
   Future<WorkoutJunction> upsertWorkoutExercises(WorkoutJunction workoutExercises) async {
     var count = Sqflite.firstIntValue(await _database.rawQuery("SELECT COUNT(*) FROM user WHERE username = ?", [workoutExercises.username]));
     
@@ -179,13 +179,16 @@ class DatabaseHelper {
 
     return workoutExercises;
   }
+  */
 
+  /*
   // Fetch Workout exercise with specific id
   Future<WorkoutJunction> fetchWorkoutExercises(int id) async {
     List<Map> results = await _database.query(workoutExercisesTable, columns: WorkoutJunction.columns, where: "id = ?", whereArgs: [id]);
     WorkoutJunction workoutExercises = WorkoutJunction.fromMap(results[0]);
     return workoutExercises;
   }
+  */
 
   // Fetch
   Future<Workout> fetchWorkoutAndWorkoutExercises(int workoutId) async {

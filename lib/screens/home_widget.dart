@@ -20,7 +20,7 @@ class HomeState extends State<Home> {
     HomePage(),
     LogPage(),
     //WorkoutList(),
-        LogPage(),
+    LogPage(),
   ];
 
   /// Show current tab
@@ -44,7 +44,8 @@ class HomeState extends State<Home> {
             title: new Text('Log'),
           ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.playlist_add), title: Text('Playlist'))
+              icon: Icon(Icons.playlist_add),
+              title: Text('Playlist'))
         ],
       ),
     );

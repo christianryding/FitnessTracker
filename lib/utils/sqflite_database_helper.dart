@@ -1,14 +1,11 @@
-import 'package:fitness_tracker/models/workout.dart';
-import 'package:flutter/widgets.dart';
+import 'dart:async';
+
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import 'dart:async';
-import 'dart:io';
-import 'package:path_provider/path_provider.dart';
-//import 'package:fitness_tracker/models/workout.dart';
+
 import 'package:fitness_tracker/models/log_entry.dart';
-import 'package:fitness_tracker/models/workout_junction.dart';
 import 'package:fitness_tracker/models/exercise.dart';
+import 'package:fitness_tracker/models/workout.dart';
 
 class DatabaseHelper {
 
@@ -168,7 +165,7 @@ class DatabaseHelper {
 
     // get workout map list
     //var logEntriesMapList = await db.query("LogEntries");
-    var logEntriesMapList = await db.query('LogEntries', columns: ['SetNumber'], where: '"WorkoutCollectionID" = ?', whereArgs: [1]);
+    var logEntriesMapList = await db.query('LogEntries', columns: ['SetNumber', 'Reps'], where: '"WorkoutCollectionID" = ?', whereArgs: [1]);
 
     int count = logEntriesMapList.length;
     List<LogEntry> logEntriesList = List<LogEntry>();

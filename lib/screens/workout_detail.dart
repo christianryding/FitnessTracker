@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:fitness_tracker/models/workout.dart';
 import 'package:fitness_tracker/utils/database_helper.dart';
 import 'package:intl/intl.dart';
-import 'package:fitness_tracker/models/workout_junction.dart';
 import 'package:fitness_tracker/models/exercise.dart';
 
 class WorkoutDetail extends StatefulWidget {
