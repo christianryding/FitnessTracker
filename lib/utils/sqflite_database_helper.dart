@@ -163,7 +163,7 @@ class DatabaseHelper {
 
     Database db = await this.database;
 
-    // get workout map list
+    // get Log Entries map list
     //var logEntriesMapList = await db.query("LogEntries");
     var logEntriesMapList = await db.query('LogEntries', columns: ['SetNumber', 'Reps'], where: '"WorkoutCollectionID" = ?', whereArgs: [1]);
 
@@ -179,11 +179,15 @@ class DatabaseHelper {
 
 
 
-//  Future<int> getActiveProgram() async{
-//
-//
-//    return 3;
-//  }
+ Future<int> getActiveProgram() async{
+ Database db = await this.database;
+
+    // get Log Entries map list
+    //var logEntriesMapList = await db.query("LogEntries");
+    var logEntriesMapList = await db.query('LogEntries', columns: ['SetNumber', 'Reps'], where: '"WorkoutCollectionID" = ?', whereArgs: [1]);
+
+   return 3;
+ }
 
   
 
