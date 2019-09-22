@@ -145,26 +145,6 @@ class DatabaseHelper {
     return result;
   }
 
-  // Fetch Operation: Get all Workout objects from database
-  Future<List<Map<String, dynamic>>> getWorkoutMapList() async {
-    Database db = await this.database;
-    //var result = await db.rawQuery('SELECT * FROM $workoutTable order by $colPriority ASC');
-    var result = await db.query(workoutTable);
-    return result;
-  }
-
-  // Get the 'Map List' [ List<Map> ] and convert it to 'Workout List' [ List<Workouts> ]
-  Future<List<Workout>> getWorkoutList() async {
-    var workoutMapList = await getWorkoutMapList(); // Get 'Map List' from database
-    int count = workoutMapList.length;         // Count the number of map entries in db table
-    List<Workout> workoutList = List<Workout>();
-
-    // For loop to create a 'Workout List' from a 'Map List'
-    for (int i = 0; i < count; i++) {
-      workoutList.add(Workout.fromMapObject(workoutMapList[i]));
-    }
-    return workoutList;
-  }
 
   /*
   Future<WorkoutJunction> upsertWorkoutExercises(WorkoutJunction workoutExercises) async {

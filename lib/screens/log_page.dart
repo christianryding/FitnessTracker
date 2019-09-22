@@ -15,7 +15,7 @@ class LogPage extends StatelessWidget {
 
 Widget logPageState(BuildContext context) {
 
-  print();//debugging
+  print();
 
   return new Center(
     child: Text('This is the log page!!!!'),
@@ -26,17 +26,21 @@ void print() async{
 
   DatabaseHelper db = new DatabaseHelper();
 
-  //var s = await db.getExercisesFromWorkout();
+  List<Exercise> list = await db.getExercisesFromActiveWorkout();
+  for(int i = 0; i<list.length; i++){
+    debugPrint("ExerciseName= " +list[i].exerciseName );
+  }
+
 
   List<LogEntry> logEntriesList = await db.getLogEntriesList();
   for(int i = 0; i<logEntriesList.length; i++){
-    LogEntry logEntry = logEntriesList[i];
-    debugPrint("Log Entry ID= " + logEntry.id.toString());
-    debugPrint("Log Entry Log Id = " + logEntry.logID.toString());
-    debugPrint("Log Entry WC ID = " + logEntry.workoutCollectionID.toString());
-    debugPrint("Log Entry Set Number = " + logEntry.setNumber.toString());
-    debugPrint("Log Entry Weight Logged= " + logEntry.weightLogged.toString());
-    debugPrint("Log Entry Reps = " + logEntry.reps.toString());
-  }
+  //   LogEntry logEntry = logEntriesList[i];
+  //   debugPrint("Log Entry ID= " + logEntry.id.toString());
+  //   debugPrint("Log Entry Log Id = " + logEntry.logID.toString());
+  //   debugPrint("Log Entry WC ID = " + logEntry.workoutCollectionID.toString());
+  //   debugPrint("Log Entry Set Number = " + logEntry.setNumber.toString());
+  //   debugPrint("Log Entry Weight Logged= " + logEntry.weightLogged.toString());
+  //   debugPrint("Log Entry Reps = " + logEntry.reps.toString());
+   }
 
 } 

@@ -180,48 +180,58 @@ Future<List<Workout>> getWorkoutList() async {
 
 
 
- Future<int> setActiveProgram(int newID) async{
-
+Future<int> setActiveProgram(int newID) async{
+  
   Database db = await this.database;
+
+    // get Log Entries map list
+    //var logEntriesMapList = await db.query("LogEntries");
+    //var logEntriesMapList = await db.query('LogEntries', columns: ['SetNumber', 'Reps'], where: '"WorkoutCollectionID" = ?', whereArgs: [1]);
+
+    //var logEntriesMapList = await db.update('Workout', 'WorkoutActive' , where: '"WorkoutID" = ?', whereArgs: [1]);
    
     // TODO - split em?
-  var updateTable = await db.rawUpdate('''
+    var updateTable = await db.rawUpdate('''
     UPDATE Workout 
     SET WorkoutActive = ? 
     WHERE WorkoutActive = ?
     ''', 
     [0,1]); 
    
-  updateTable = await db.rawUpdate('''
+    updateTable = await db.rawUpdate('''
     UPDATE Workout 
     SET WorkoutActive = ? 
     WHERE WorkoutID = ?
     ''', 
     [1,newID]);     
-
-   return updateTable;
+   return 3;
  }
 
 
-/*
- Future<int> getExercisesFromWorkout() async{
+Future<List<Exercise>> getExercisesFromActiveWorkout()async{
   
   Database db = await this.database;
-   
-    // TODO - split em?
-  int updateTable = await db.rawQuery('''
-    SELECT WorkoutID, WorkoutActive, ExerciseID, ExerciseName 
-    FROM Workout, Exercises 
-    WHERE WorkoutActive = ?
-    ''',
-    [1] 
-    ); 
-   
-   debugPrint("asdsad");
+  int active = 1;
+
+  // Fetch active Workout 
+  List<Map> results = await _database.query('Workout', columns:['WorkoutID'], where: "WorkoutActive = ?", whereArgs: [active]);
+  Workout  workoutId = Workout.fromMapObject(results[0]);
+
+  List<Map> exerciseIdList = await _database.query('WorkoutCollection', columns:['ExerciseID'], where: "WorkoutID = ?", whereArgs: [workoutId.id]);
+  
+  int count = exerciseIdList.length;
+  debugPrint("couint " + count.toString());
+
+  List<Exercise> exercisesList = List<Exercise>();
+  // For loop to create a 'Workout List' from a 'Map List'
+  for (int i = 0; i < count; i++) {
+    exercisesList.add(Exercise.fromMapObject(exerciseIdList[i]));
+
+  }
+  return exercisesList;
+}
 
 
-   return updateTable;
- }
-*/
+  
 
 }// DatabaseHelper
