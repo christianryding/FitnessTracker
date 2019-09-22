@@ -14,7 +14,7 @@ class WorkoutList extends StatefulWidget {
 
 class WorkoutListState extends State<WorkoutList> {
   
-   DatabaseHelper db= new DatabaseHelper();
+  DatabaseHelper db= new DatabaseHelper();
   int _selectedRadio;
 
  @override
@@ -64,9 +64,8 @@ class WorkoutListState extends State<WorkoutList> {
                 groupValue: _selectedRadio,
                 activeColor: Colors.cyan,
                   onChanged: (val) {
-                    print("Radio " + values[index].id.toString());
                     setSelectedRadio(val);
-                    //updateDb();
+                    updateDb(values[index].id);
                   },
               ),
               new Divider(height: 2.0,),
@@ -76,8 +75,8 @@ class WorkoutListState extends State<WorkoutList> {
     );
   }
 
-void updateDb(int oldID, int newID){
-  
+void updateDb(int newID) async {
+  var test = await db.getActiveProgram(newID);
   // query so active disappear and new sets 
 }
 
