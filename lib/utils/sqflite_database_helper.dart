@@ -37,7 +37,7 @@ class DatabaseHelper {
 
     // Get a location using getDatabasesPath
     var databasesPath = await getDatabasesPath();
-    String path = join(databasesPath, 'notes77.db');
+    String path = join(databasesPath, 'notes78.db');
 
     // Open/create the database at a given path
     var workoutsDatabase = await openDatabase(path, version: 1, onCreate: _createDb);
@@ -121,9 +121,9 @@ class DatabaseHelper {
 
 
   // Get the 'Map List' [ List<Map> ] and convert it to 'Workout List' [ List<Workouts> ]
-  Future<List<Workout>> getWorkoutList() async {
+Future<List<Workout>> getWorkoutList() async {
 
-    Database db = await this.database;
+  Database db = await this.database;
 
     // get workout map list
     var workoutMapList = await db.query("Workout");
@@ -179,7 +179,7 @@ class DatabaseHelper {
 
 
 
- Future<int> getActiveProgram(int newID) async{
+Future<int> getActiveProgram(int newID) async{
   
   Database db = await this.database;
 
