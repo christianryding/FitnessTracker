@@ -24,24 +24,9 @@ Widget logPageState(BuildContext context) {
 
 void print() async{
 
-DatabaseHelper db = new DatabaseHelper();
+  DatabaseHelper db = new DatabaseHelper();
 
-/*
-  List<Workout> workoutList = await db.getWorkoutList();
-  for(int i = 0; i<workoutList.length; i++){
-    Workout workout = workoutList[i];
-    debugPrint("Workout Id = " + workout.id.toString());
-    debugPrint("Workout Name = " + workout.title);
-    debugPrint("Workout Active = " + workout.active.toString());
-  }
-
-  List<Exercise> exercisesList = await db.getExercisesList();
-  for(int i = 0; i<exercisesList.length; i++){
-    Exercise exercise = exercisesList[i];
-    debugPrint("Exercise Id = " + exercise.id.toString());
-    debugPrint("Exercise Name = " + exercise.exerciseName);
-  }
-*/
+  //var s = await db.getExercisesFromWorkout();
 
   List<LogEntry> logEntriesList = await db.getLogEntriesList();
   for(int i = 0; i<logEntriesList.length; i++){
@@ -53,11 +38,5 @@ DatabaseHelper db = new DatabaseHelper();
     debugPrint("Log Entry Weight Logged= " + logEntry.weightLogged.toString());
     debugPrint("Log Entry Reps = " + logEntry.reps.toString());
   }
-
-
-
-
-
-
 
 } 

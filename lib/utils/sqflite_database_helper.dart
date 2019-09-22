@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/rendering.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -179,40 +180,48 @@ class DatabaseHelper {
 
 
 
- Future<int> getActiveProgram(int newID) async{
+ Future<int> setActiveProgram(int newID) async{
   
   Database db = await this.database;
-
-    // get Log Entries map list
-    //var logEntriesMapList = await db.query("LogEntries");
-    //var logEntriesMapList = await db.query('LogEntries', columns: ['SetNumber', 'Reps'], where: '"WorkoutCollectionID" = ?', whereArgs: [1]);
-
-    //var logEntriesMapList = await db.update('Workout', 'WorkoutActive' , where: '"WorkoutID" = ?', whereArgs: [1]);
    
     // TODO - split em?
-    var updateTable = await db.rawUpdate('''
+  var updateTable = await db.rawUpdate('''
     UPDATE Workout 
     SET WorkoutActive = ? 
     WHERE WorkoutActive = ?
     ''', 
     [0,1]); 
    
-    updateTable = await db.rawUpdate('''
+  updateTable = await db.rawUpdate('''
     UPDATE Workout 
     SET WorkoutActive = ? 
     WHERE WorkoutID = ?
     ''', 
     [1,newID]);     
 
-   
-
-    //UPDATE products SET Qty=41 WHERE product_id=102;
-
-
-
-   return 3;
+   return updateTable;
  }
 
+
+/*
+ Future<int> getExercisesFromWorkout() async{
   
+  Database db = await this.database;
+   
+    // TODO - split em?
+  int updateTable = await db.rawQuery('''
+    SELECT WorkoutID, WorkoutActive, ExerciseID, ExerciseName 
+    FROM Workout, Exercises 
+    WHERE WorkoutActive = ?
+    ''',
+    [1] 
+    ); 
+   
+   debugPrint("asdsad");
+
+
+   return updateTable;
+ }
+*/
 
 }// DatabaseHelper

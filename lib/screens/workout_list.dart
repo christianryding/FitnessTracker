@@ -76,8 +76,7 @@ class WorkoutListState extends State<WorkoutList> {
   }
 
 void updateDb(int newID) async {
-  var test = await db.getActiveProgram(newID);
-  // query so active disappear and new sets 
+  int update = await db.setActiveProgram(newID);
 }
 
   // Changes the selected value on 'onChanged' click on each radio button
