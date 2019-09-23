@@ -27,9 +27,9 @@ void print() async{
   DatabaseHelper db = new DatabaseHelper();
 
   List<Exercise> list = await db.getExercisesFromActiveWorkout();
-  for(int i = 0; i<list.length; i++){
-    debugPrint("ExerciseName= " +list[i].exerciseName );
-  }
+  //for(int i = 0; i<list.length; i++){
+    //debugPrint("ExerciseName= " +list[i].exerciseName );
+  //}
 
 
   List<LogEntry> logEntriesList = await db.getLogEntriesList();

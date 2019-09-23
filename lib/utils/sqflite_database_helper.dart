@@ -42,6 +42,7 @@ class DatabaseHelper {
 
     // Open/create the database at a given path
     var workoutsDatabase = await openDatabase(path, version: 1, onCreate: _createDb);
+
     return workoutsDatabase;
   }
 
@@ -115,29 +116,24 @@ class DatabaseHelper {
         (3,3,3,8,12)
         '''
      );
-
-
 }
-
-
 
   // Get the 'Map List' [ List<Map> ] and convert it to 'Workout List' [ List<Workouts> ]
 Future<List<Workout>> getWorkoutList() async {
 
   Database db = await this.database;
 
-    // get workout map list
-    var workoutMapList = await db.query("Workout");
+  // get workout map list
+  var workoutMapList = await db.query("Workout");
+  int count = workoutMapList.length;
+  List<Workout> workoutList = List<Workout>();
 
-    int count = workoutMapList.length;
-    List<Workout> workoutList = List<Workout>();
-
-    // For loop to create a 'Workout List' from a 'Map List'
-    for (int i = 0; i < count; i++) {
-      workoutList.add(Workout.fromMapObject(workoutMapList[i]));
-    }
-    return workoutList;
+  // For loop to create a 'Workout List' from a 'Map List'
+  for (int i = 0; i < count; i++) {
+    workoutList.add(Workout.fromMapObject(workoutMapList[i]));
   }
+  return workoutList;
+}
 
 
   // Get the 'Map List' [ List<Map> ] and convert it to 'Exercise List' [ List<Exercise> ]
@@ -183,28 +179,22 @@ Future<List<Workout>> getWorkoutList() async {
 Future<int> setActiveProgram(int newID) async{
   
   Database db = await this.database;
-
-    // get Log Entries map list
-    //var logEntriesMapList = await db.query("LogEntries");
-    //var logEntriesMapList = await db.query('LogEntries', columns: ['SetNumber', 'Reps'], where: '"WorkoutCollectionID" = ?', whereArgs: [1]);
-
-    //var logEntriesMapList = await db.update('Workout', 'WorkoutActive' , where: '"WorkoutID" = ?', whereArgs: [1]);
-   
-    // TODO - split em?
-    var updateTable = await db.rawUpdate('''
+  var updateTable = await db.rawUpdate('''
     UPDATE Workout 
     SET WorkoutActive = ? 
     WHERE WorkoutActive = ?
     ''', 
     [0,1]); 
    
-    updateTable = await db.rawUpdate('''
+  updateTable = await db.rawUpdate('''
     UPDATE Workout 
     SET WorkoutActive = ? 
     WHERE WorkoutID = ?
     ''', 
     [1,newID]);     
-   return 3;
+  
+  //TODO - fix return statement  
+  return 3;
  }
 
 
@@ -217,18 +207,35 @@ Future<List<Exercise>> getExercisesFromActiveWorkout()async{
   List<Map> results = await _database.query('Workout', columns:['WorkoutID'], where: "WorkoutActive = ?", whereArgs: [active]);
   Workout  workoutId = Workout.fromMapObject(results[0]);
 
+  // Fetch exercises id
   List<Map> exerciseIdList = await _database.query('WorkoutCollection', columns:['ExerciseID'], where: "WorkoutID = ?", whereArgs: [workoutId.id]);
-  
   int count = exerciseIdList.length;
-  debugPrint("couint " + count.toString());
+  debugPrint("count: " + count.toString()); 
 
-  List<Exercise> exercisesList = List<Exercise>();
-  // For loop to create a 'Workout List' from a 'Map List'
-  for (int i = 0; i < count; i++) {
-    exercisesList.add(Exercise.fromMapObject(exerciseIdList[i]));
+  // Fetch names of exercises 
+  List<Map> test = await _database.rawQuery('''
+    SELECT ExerciseID, ExerciseName
+    FROM Exercises 
+    WHERE ExerciseID IN (1, 2, 3) 
+    '''
+  );
 
-  }
-  return exercisesList;
+
+
+  Exercise exercise = Exercise.fromMapObject(test[0]);
+  debugPrint("test: " + exercise.exerciseName); 
+    Exercise exercise2 = Exercise.fromMapObject(test[1]);
+  debugPrint("test: " + exercise2.exerciseName); 
+    Exercise exercise3 = Exercise.fromMapObject(test[2]);
+  debugPrint("test: " + exercise3.exerciseName); 
+  //exerciseIDs.add(Exercise.fromMapObject(exerciseNameList[0]));
+  //debugPrint("test: " + exerciseIDs[0].exerciseName);
+
+
+
+
+ List<Exercise> s = new List<Exercise>();
+  return s;
 }
 
 
