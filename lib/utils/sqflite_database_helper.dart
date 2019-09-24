@@ -179,6 +179,7 @@ Future<List<Workout>> getWorkoutList() async {
 Future<int> setActiveProgram(int newID) async{
   
   Database db = await this.database;
+  
   var updateTable = await db.rawUpdate('''
     UPDATE Workout 
     SET WorkoutActive = ? 
@@ -216,11 +217,9 @@ Future<List<Exercise>> getExercisesFromActiveWorkout()async{
   List<Map> test = await _database.rawQuery('''
     SELECT ExerciseID, ExerciseName
     FROM Exercises 
-    WHERE ExerciseID IN (1, 2, 3) 
+    WHERE ExerciseID IN (1,2,3) 
     '''
   );
-
-
 
   Exercise exercise = Exercise.fromMapObject(test[0]);
   debugPrint("test: " + exercise.exerciseName); 
@@ -228,11 +227,6 @@ Future<List<Exercise>> getExercisesFromActiveWorkout()async{
   debugPrint("test: " + exercise2.exerciseName); 
     Exercise exercise3 = Exercise.fromMapObject(test[2]);
   debugPrint("test: " + exercise3.exerciseName); 
-  //exerciseIDs.add(Exercise.fromMapObject(exerciseNameList[0]));
-  //debugPrint("test: " + exerciseIDs[0].exerciseName);
-
-
-
 
  List<Exercise> s = new List<Exercise>();
   return s;
