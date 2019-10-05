@@ -38,7 +38,7 @@ class DatabaseHelper {
 
     // Get a location using getDatabasesPath
     var databasesPath = await getDatabasesPath();
-    String path = join(databasesPath, 'notes78.db');
+    String path = join(databasesPath, 'notes79.db');
 
     // Open/create the database at a given path
     var workoutsDatabase = await openDatabase(path, version: 1, onCreate: _createDb);
@@ -87,7 +87,7 @@ class DatabaseHelper {
           INSERT INTO Exercises (ExerciseID,ExerciseName)
           VALUES
             (1,"Pushups"),
-            (2,"Pushups"),
+            (2,"Bench Press"),
             (3,"Calves"),
             (4,"Running")
             '''
@@ -159,11 +159,7 @@ Future<List<Workout>> getWorkoutList() async {
   Future<List<LogEntry>> getLogEntriesList() async {
 
     Database db = await this.database;
-
-    // get Log Entries map list
-    //var logEntriesMapList = await db.query("LogEntries");
     var logEntriesMapList = await db.query('LogEntries', columns: ['SetNumber', 'Reps'], where: '"WorkoutCollectionID" = ?', whereArgs: [1]);
-
     int count = logEntriesMapList.length;
     List<LogEntry> logEntriesList = List<LogEntry>();
 
@@ -175,9 +171,7 @@ Future<List<Workout>> getWorkoutList() async {
   }
 
 
-
-Future<int> setActiveProgram(int newID) async{
-  
+Future<int> setActiveProgram(int newID) async{  
   Database db = await this.database;
   
   var updateTable = await db.rawUpdate('''
@@ -186,7 +180,7 @@ Future<int> setActiveProgram(int newID) async{
     WHERE WorkoutActive = ?
     ''', 
     [0,1]); 
-   
+
   updateTable = await db.rawUpdate('''
     UPDATE Workout 
     SET WorkoutActive = ? 
@@ -200,7 +194,6 @@ Future<int> setActiveProgram(int newID) async{
 
 
 Future<List<Exercise>> getExercisesFromActiveWorkout()async{
-  
   Database db = await this.database;
   int active = 1;
 
@@ -223,12 +216,12 @@ Future<List<Exercise>> getExercisesFromActiveWorkout()async{
 
   Exercise exercise = Exercise.fromMapObject(test[0]);
   debugPrint("test: " + exercise.exerciseName); 
-    Exercise exercise2 = Exercise.fromMapObject(test[1]);
+  Exercise exercise2 = Exercise.fromMapObject(test[1]);
   debugPrint("test: " + exercise2.exerciseName); 
-    Exercise exercise3 = Exercise.fromMapObject(test[2]);
+  Exercise exercise3 = Exercise.fromMapObject(test[2]);
   debugPrint("test: " + exercise3.exerciseName); 
-
- List<Exercise> s = new List<Exercise>();
+  List<Exercise> s = new List<Exercise>();
+  
   return s;
 }
 
@@ -236,3 +229,57 @@ Future<List<Exercise>> getExercisesFromActiveWorkout()async{
   
 
 }// DatabaseHelper
+
+
+/* MISC
+  // Delete Operation: Delete a Workout object from database
+  Future<int> deleteWorkout(int id) async {
+    var db = await this.database;
+    int result = await db.rawDelete('DELETE FROM $workoutTable WHERE $colId = $id');
+    return result;
+  }
+
+  // Insert Operation: Insert a Workout object to database
+  Future<int> insertWorkout(Workout workout) async {
+    Database db = await this.database;
+    var result = await db.insert(workoutTable, workout.toMap());
+    return result;
+  }
+
+  // Update Operation: Update a Workout object and save it to database
+  Future<int> updateWorkout(Workout workout) async {
+    var db = await this.database;
+    var result = await db.update(workoutTable, workout.toMap(), where: '$colId = ?', whereArgs: [workout.id]);
+    return result;
+  }
+
+  // Get number of Workout objects in database
+  Future<int> getCount() async {
+    Database db = await this.database;
+    List<Map<String, dynamic>> x = await db.rawQuery('SELECT COUNT (*) from $workoutTable');
+    int result = Sqflite.firstIntValue(x);
+    return result;
+  
+
+  // Fetch
+  Future<Workout> fetchWorkoutAndWorkoutExercises(int workoutId) async {
+    List<Map> results = await _database.query(workoutTable, columns: Workout.columns, where: "id = ?", whereArgs: [workoutId]);
+    Workout workouts = Workout.fromMapObject(results[0]);
+    //workouts.workoutExercises = await fetchWorkoutExercises(workouts.id);
+
+    return workouts;
+  }
+
+  // Fetch all Exercise objects
+  Future <List<Exercise>> fetchExercises() async {
+    var result = await _database.rawQuery('SELECT * FROM $exercisesTable');
+    List<Exercise> exercises = List<Exercise>();
+
+    for(int  i= 0; i< result.length; i++){
+      exercises.add(Exercise.fromMapObject(result[i]));
+    }
+
+    return exercises;
+  }
+
+  */

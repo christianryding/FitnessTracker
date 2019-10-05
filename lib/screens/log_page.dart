@@ -17,9 +17,58 @@ Widget logPageState(BuildContext context) {
 
   print();
 
-  return new Center(
-    child: Text('This is the log page!!!!'),
-  );
+
+  return new Scaffold(
+
+
+    
+        backgroundColor: Colors.white,
+        body: new Container(
+            padding: const EdgeInsets.all(40.0),
+            child: new Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            new TextField(
+              decoration: new InputDecoration(labelText: "Enter your number"),
+              keyboardType: TextInputType.number,
+            ),
+            new TextField(
+              decoration: new InputDecoration(labelText: "Enter your number"),
+              keyboardType: TextInputType.number,
+            ),
+
+            new Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children:<Widget> [
+
+                Expanded(
+                  child: Text('ActivityName', textAlign: TextAlign.left),
+                ),
+                Expanded(
+                  child: TextField(
+                          //decoration: new InputDecoration(labelText: "Log"),
+                          keyboardType: TextInputType.number,
+                          textAlign:  TextAlign.center,
+                        ),
+                ),
+                  Expanded(
+                    child: new RaisedButton(
+                      child: new Text("Log"),
+                      color: Colors.red,
+                      onPressed: () => logBtnPressed(4),
+                    ),
+                  ),
+
+              ],
+            ),
+          ],  
+        )
+        ),
+      );
+}
+
+void logBtnPressed(int w){
+debugPrint(w.toString());
 }
 
 void print() async{
@@ -31,16 +80,5 @@ void print() async{
     //debugPrint("ExerciseName= " +list[i].exerciseName );
   //}
 
-
-  List<LogEntry> logEntriesList = await db.getLogEntriesList();
-  for(int i = 0; i<logEntriesList.length; i++){
-  //   LogEntry logEntry = logEntriesList[i];
-  //   debugPrint("Log Entry ID= " + logEntry.id.toString());
-  //   debugPrint("Log Entry Log Id = " + logEntry.logID.toString());
-  //   debugPrint("Log Entry WC ID = " + logEntry.workoutCollectionID.toString());
-  //   debugPrint("Log Entry Set Number = " + logEntry.setNumber.toString());
-  //   debugPrint("Log Entry Weight Logged= " + logEntry.weightLogged.toString());
-  //   debugPrint("Log Entry Reps = " + logEntry.reps.toString());
-   }
 
 } 
