@@ -20,8 +20,6 @@ Widget logPageState(BuildContext context) {
 
   return new Scaffold(
 
-
-    
         backgroundColor: Colors.white,
         body: new Container(
             padding: const EdgeInsets.all(40.0),
